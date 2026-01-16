@@ -51,12 +51,12 @@ export default function BookingWidget() {
         let total = 0
         interval.forEach(day => {
             const month = day.getMonth() // 0-11
-            // Alta: Mayo (4) a Octubre (9) -> 130€
-            // Baja: Noviembre (10) a Abril (3) -> 110€
+            // Alta: Mayo (4) a Octubre (9) -> 135€ (IVA incluido)
+            // Baja: Noviembre (10) a Abril (3) -> 115€ (IVA incluido)
             if (month >= 4 && month <= 9) {
-                total += 130
+                total += 135
             } else {
-                total += 110
+                total += 115
             }
         })
         return total
@@ -159,6 +159,7 @@ export default function BookingWidget() {
                             Precio total: <span className="text-primary font-bold text-sm">
                                 {date?.from && date?.to ? `${calculatePrice(date.from, date.to)}€` : '0€'}
                             </span>
+                            {date?.from && date?.to && <span className="block text-[10px] mt-0.5">* IVA incluido</span>}
                         </p>
                     </div>
                 </div>
