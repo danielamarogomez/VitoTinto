@@ -16,18 +16,7 @@ export default async function Navbar() {
                     </span>
                 </Link>
                 <div className="flex items-center">
-                    {user ? (
-                        <div className="flex gap-6 items-center">
-                            <Link href="/admin" className="text-sm font-bold text-primary hover:text-primary/80 transition-colors bg-primary/10 px-4 py-2 rounded-lg">
-                                Panel Admin
-                            </Link>
-                            <form action="/auth/signout" method="post">
-                                <button className="text-sm font-medium text-muted-foreground hover:text-red-600 transition-colors cursor-pointer">
-                                    Cerrar Sesión
-                                </button>
-                            </form>
-                        </div>
-                    ) : null}
+                    {/* Navbar limpia - Sin botones */}
                 </div>
             </div>
         </nav>

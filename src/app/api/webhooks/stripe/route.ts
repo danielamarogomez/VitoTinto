@@ -69,31 +69,58 @@ export async function POST(req: Request) {
                 console.log('👤 [WEBHOOK] Perfil encontrado:', customerName)
             }
 
-            // 2. Insertar Reserva
-            console.log('📝 [WEBHOOK] Intentando insertar reserva en Supabase...')
+            // 2. Procesar Reserva (Actualizar o Crear)
+            const bookingId = metadata.booking_id
 
-            // Verificamos si realmente existe el perfil para evitar errores de clave foránea
-            const { data: profileCheck } = await supabaseAdmin
-                .from('profiles')
-                .select('id')
-                .eq('id', user_id)
-                .single()
+            let booking: any
+            let bookingError: any
 
-            const { data: booking, error: bookingError } = await supabaseAdmin
-                .from('bookings')
-                .insert({
-                    user_id: profileCheck ? user_id : null, // Si no existe el perfil, no bloqueamos la reserva
-                    start_date: start_date,
-                    end_date: end_date,
-                    total_price: totalPrice,
-                    status: 'confirmed',
-                    customer_name: customerName,
-                    customer_email: userEmail,
-                    customer_phone: customerPhone,
-                    payment_intent_id: session.payment_intent as string
-                })
-                .select()
-                .single()
+            if (bookingId) {
+                console.log('🔄 [WEBHOOK] Actualizando reserva existente:', bookingId)
+                const { data, error } = await supabaseAdmin
+                    .from('bookings')
+                    .update({
+                        status: 'confirmed',
+                        payment_intent_id: session.payment_intent as string,
+                        // Actualizar datos de facturación si vienen vacíos
+                        ...(customerPhone && { customer_phone: customerPhone })
+                    })
+                    .eq('id', bookingId)
+                    .select()
+                    .single()
+
+                booking = data
+                bookingError = error
+            } else {
+                // FALLBACK: Si no hay ID, creamos nueva (comportamiento antiguo)
+                console.log('📝 [WEBHOOK] Creando nueva reserva (no se encontró booking_id)...')
+
+                // Verificamos si realmente existe el perfil para evitar errores de clave foránea
+                const { data: profileCheck } = await supabaseAdmin
+                    .from('profiles')
+                    .select('id')
+                    .eq('id', user_id)
+                    .single()
+
+                const { data, error } = await supabaseAdmin
+                    .from('bookings')
+                    .insert({
+                        user_id: profileCheck ? user_id : null,
+                        start_date: start_date,
+                        end_date: end_date,
+                        total_price: totalPrice,
+                        status: 'confirmed',
+                        customer_name: customerName,
+                        customer_email: userEmail,
+                        customer_phone: customerPhone,
+                        payment_intent_id: session.payment_intent as string
+                    })
+                    .select()
+                    .single()
+
+                booking = data
+                bookingError = error
+            }
 
             if (bookingError) {
                 console.error('❌ [WEBHOOK] Error insertando reserva:', bookingError)

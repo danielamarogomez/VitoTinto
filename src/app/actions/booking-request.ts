@@ -32,7 +32,7 @@ export async function createBookingRequest(data: BookingRequestData) {
                 customer_phone: data.customerPhone,
                 customer_message: data.customerMessage || '',
                 status: 'pending_approval', // Esperando aprobación de Andrea
-                user_id: user?.id || null // Puede ser null si no está autenticado
+                user_id: null // Forzamos null para evitar errores de FK/Perfil. Tratamos como invitado.
             })
             .select()
             .single()
