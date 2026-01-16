@@ -18,25 +18,16 @@ export default async function Navbar() {
                 <div className="flex items-center">
                     {user ? (
                         <div className="flex gap-6 items-center">
-                            <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
-                                Mis Reservas
+                            <Link href="/admin" className="text-sm font-bold text-primary hover:text-primary/80 transition-colors bg-primary/10 px-4 py-2 rounded-lg">
+                                Panel Admin
                             </Link>
                             <form action="/auth/signout" method="post">
-                                <button className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+                                <button className="text-sm font-medium text-muted-foreground hover:text-red-600 transition-colors cursor-pointer">
                                     Cerrar Sesión
                                 </button>
                             </form>
                         </div>
-                    ) : (
-                        <div className="flex gap-8 items-center">
-                            <Link href="/login" className="text-sm font-semibold hover:text-primary transition-colors">
-                                Iniciar Sesión
-                            </Link>
-                            <Link href="/login" className="text-sm font-bold bg-primary text-primary-foreground px-6 py-2.5 rounded-full hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-md">
-                                Registrarse
-                            </Link>
-                        </div>
-                    )}
+                    ) : null}
                 </div>
             </div>
         </nav>

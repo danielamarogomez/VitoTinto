@@ -68,6 +68,9 @@ export default function Footer() {
                         <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                             Facebook
                         </a>
+                        <Link href="/login" className="text-xs text-muted-foreground/50 hover:text-primary transition-colors">
+                            Acceso Propietario
+                        </Link>
                     </div>
                 </div>
             </div>
