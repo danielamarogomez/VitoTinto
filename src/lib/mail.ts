@@ -181,3 +181,199 @@ export async function sendCancellationRefundEmail(data: {
         console.error('❌ Error enviando email de cancelación:', error.message || error)
     }
 }
+
+export async function sendBookingRequestToOwner(data: {
+    bookingId: string
+    customerName: string
+    customerEmail: string
+    customerPhone: string
+    customerMessage: string
+    startDate: string
+    endDate: string
+    totalPrice: number
+}) {
+    const ownerEmail = process.env.OWNER_EMAIL || 'danielamarogomez@gmail.com'
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'
+
+    console.log(`📧 Enviando notificación de nueva solicitud a: ${ownerEmail}`)
+
+    try {
+        await resend.emails.send({
+            from: 'Vito Tinto <onboarding@resend.dev>',
+            to: ownerEmail,
+            subject: `🔔 Nueva Solicitud de Reserva - ${data.customerName}`,
+            html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+                    <div style="background-color: #722f37; padding: 40px 20px; text-align: center; color: white;">
+                        <h1 style="margin: 0; font-size: 28px;">🔔 Nueva Solicitud de Reserva</h1>
+                        <p style="opacity: 0.9;">Un cliente está interesado en Vito Tinto</p>
+                    </div>
+                    
+                    <div style="padding: 30px;">
+                        <h2 style="color: #722f37;">Detalles del Cliente:</h2>
+                        
+                        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <table style="width: 100%; font-size: 14px;">
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Nombre:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.customerName}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Email:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">
+                                        <a href="mailto:${data.customerEmail}" style="color: #722f37;">${data.customerEmail}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Teléfono:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">
+                                        <a href="tel:${data.customerPhone}" style="color: #722f37;">${data.customerPhone}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <h2 style="color: #722f37; margin-top: 30px;">Detalles de la Reserva:</h2>
+                        
+                        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <table style="width: 100%; font-size: 14px;">
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Check-in:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.startDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Check-out:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.endDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Precio Total:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right; color: #722f37; font-size: 18px;">${data.totalPrice}€</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        ${data.customerMessage ? `
+                            <h3 style="color: #722f37; margin-top: 30px;">Mensaje del cliente:</h3>
+                            <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                                <p style="margin: 0; font-style: italic;">"${data.customerMessage}"</p>
+                            </div>
+                        ` : ''}
+
+                        <div style="margin-top: 40px; text-align: center;">
+                            <a href="${appUrl}/admin" 
+                               style="display: inline-block; background-color: #722f37; color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                                Ver en Panel de Admin
+                            </a>
+                        </div>
+
+                        <div style="margin-top: 30px; padding: 20px; background-color: #e7f3ff; border-radius: 8px; border-left: 4px solid #2196F3;">
+                            <p style="margin: 0; font-size: 14px; color: #333;">
+                                <strong>💡 Próximos pasos:</strong><br>
+                                1. Revisa la disponibilidad en tu calendario<br>
+                                2. Contacta al cliente por WhatsApp o email<br>
+                                3. Si confirmas, aprueba la reserva desde el panel de admin<br>
+                                4. El sistema enviará automáticamente el link de pago al cliente
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
+                            <p style="color: #999; font-size: 12px;">ID de Solicitud: ${data.bookingId.slice(0, 8)}</p>
+                            <p style="color: #999; font-size: 12px;">Vito Tinto - Panel de Administración</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        })
+        console.log(`✅ Notificación de solicitud enviada a: ${ownerEmail}`)
+    } catch (error: any) {
+        console.error('❌ Error enviando notificación al propietario:', error.message || error)
+        throw error
+    }
+}
+
+export async function sendPaymentLinkToCustomer(data: {
+    customerName: string
+    customerEmail: string
+    startDate: string
+    endDate: string
+    totalPrice: number
+    paymentLink: string
+    bookingId: string
+}) {
+    console.log(`📧 Enviando link de pago a: ${data.customerEmail}`)
+
+    try {
+        await resend.emails.send({
+            from: 'Vito Tinto <onboarding@resend.dev>',
+            to: data.customerEmail,
+            subject: `✅ ¡Tu reserva está confirmada! - Completa el pago`,
+            html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
+                    <div style="background-color: #722f37; padding: 40px 20px; text-align: center; color: white;">
+                        <h1 style="margin: 0; font-size: 28px;">✅ ¡Buenas noticias!</h1>
+                        <p style="opacity: 0.9;">Tu reserva ha sido aprobada</p>
+                    </div>
+                    
+                    <div style="padding: 30px;">
+                        <h2 style="color: #722f37;">Hola ${data.customerName},</h2>
+                        <p>¡Genial! Hemos revisado tu solicitud y <strong>confirmamos la disponibilidad</strong> de Vito Tinto para las fechas que solicitaste.</p>
+                        
+                        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">📅 Detalles de tu Reserva:</h3>
+                            <table style="width: 100%; font-size: 14px;">
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Check-in:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.startDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Check-out:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.endDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Total a pagar:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right; color: #722f37; font-size: 18px;">${data.totalPrice}€</td>
+                                </tr>
+                            </table>
+                            <p style="margin: 10px 0 0 0; font-size: 11px; color: #999;">* IVA incluido</p>
+                        </div>
+
+                        <div style="background-color: #e7f3ff; padding: 20px; border-radius: 8px; border-left: 4px solid #2196F3; margin: 20px 0;">
+                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">💳 Siguiente paso: Completar el pago</h3>
+                            <p style="margin: 10px 0; font-size: 14px;">
+                                Para asegurar tu reserva, completa el pago de forma segura a través de Stripe haciendo clic en el botón de abajo.
+                            </p>
+                        </div>
+
+                        <div style="text-align: center; margin: 40px 0;">
+                            <a href="${data.paymentLink}" 
+                               style="display: inline-block; background-color: #722f37; color: white; padding: 18px 50px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                💳 Pagar Ahora (${data.totalPrice}€)
+                            </a>
+                        </div>
+
+                        <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin: 20px 0;">
+                            <p style="margin: 0; font-size: 13px; color: #856404;">
+                                <strong>⏰ Importante:</strong> Este link de pago es válido durante 24 horas. Si no completas el pago en ese tiempo, la reserva quedará liberada para otros clientes.
+                            </p>
+                        </div>
+
+                        <p style="margin-top: 30px;">Una vez completado el pago, recibirás inmediatamente un email de confirmación con todos los detalles para recoger la furgoneta.</p>
+
+                        <p>¿Tienes alguna duda? No dudes en contactarnos respondiendo a este email o por WhatsApp.</p>
+
+                        <p style="margin-top: 30px;">¡Nos vemos pronto en la carretera! 🚐💨</p>
+
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
+                            <p style="color: #999; font-size: 12px;">ID de Reserva: ${data.bookingId.slice(0, 8)}</p>
+                            <p style="color: #999; font-size: 12px;">Vito Tinto - Libertad sobre ruedas</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        })
+        console.log(`✅ Link de pago enviado a: ${data.customerEmail}`)
+    } catch (error: any) {
+        console.error('❌ Error enviando link de pago:', error.message || error)
+        throw error
+    }
+}

@@ -9,10 +9,12 @@ import {
     Clock,
     CheckCircle2,
     ChevronRight,
-    Search
+    Search,
+    Bell
 } from 'lucide-react'
 import Link from 'next/link'
 import OccupancyCalendar from '@/components/admin/OccupancyCalendar'
+import PendingBookingRequests from '@/components/admin/PendingBookingRequests'
 
 export default async function AdminDashboard() {
     const supabase = await createClient()
@@ -67,6 +69,15 @@ export default async function AdminDashboard() {
                     value={(userCount || 0).toString()}
                     icon={<Users className="h-6 w-6" />}
                 />
+            </div>
+
+            {/* Pending Booking Requests */}
+            <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                    <Bell className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-bold">Solicitudes Pendientes de Aprobación</h2>
+                </div>
+                <PendingBookingRequests />
             </div>
 
             {/* Occupancy Calendar */}
