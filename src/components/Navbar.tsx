@@ -18,8 +18,32 @@ export default async function Navbar() {
                         Vito Tinto
                     </span>
                 </Link>
-                <div className="flex items-center">
-                    {/* Navbar limpia - Sin botones */}
+                <div className="hidden md:flex items-center space-x-8">
+                    <Link href="/#la-furgo" className="text-sm font-bold text-primary hover:text-primary/70 transition-colors">
+                        LA FURGO
+                    </Link>
+                    <Link href="/#sobre-mi" className="text-sm font-bold text-primary hover:text-primary/70 transition-colors">
+                        SOBRE MÍ
+                    </Link>
+                    <Link href="/#rutas" className="text-sm font-bold text-primary hover:text-primary/70 transition-colors">
+                        RUTAS
+                    </Link>
+                    <Link
+                        href="/#reservar"
+                        className="bg-primary text-primary-foreground px-5 py-2 rounded-full text-xs font-bold hover:bg-primary/90 transition-all shadow-md transform hover:scale-105"
+                    >
+                        RESERVAR
+                    </Link>
+                </div>
+
+                {/* Botón Reservar visible en móvil también */}
+                <div className="md:hidden">
+                    <Link
+                        href="/#reservar"
+                        className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-xs font-bold hover:bg-primary/90 transition-all shadow-md"
+                    >
+                        RESERVAR
+                    </Link>
                 </div>
             </div>
         </nav>

@@ -5,8 +5,7 @@ export default function Logo({ className = "h-12 w-auto" }: { className?: string
         <img
             src="/logo.png"
             alt="Vito Tinto Logo"
-            className={`${className} object-contain`}
-            style={{ mixBlendMode: 'multiply' }} // Esto ayuda a que el blanco sea transparente en fondos claros
+            className={`${className} object-contain mix-blend-multiply contrast-125`}
         />
     )
 }

@@ -4,7 +4,7 @@ import Image from "next/image"
 
 export default function AboutSection() {
     return (
-        <section className="py-20 bg-[#f4e4bc]/30"> {/* Un tono arena un pelín más oscuro para contrastar */}
+        <section id="sobre-mi" className="py-20 bg-[#f4e4bc]/30"> {/* Un tono arena un pelín más oscuro para contrastar */}
             <div className="container mx-auto px-4 md:px-6 max-w-screen-xl">
                 <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 

@@ -27,7 +27,7 @@ const GALLERY_IMAGES = [
 
 export default function GallerySection() {
     return (
-        <section className="py-20 bg-background">
+        <section id="la-furgo" className="py-20 bg-background">
             <div className="container mx-auto px-4 md:px-6 max-w-screen-xl">
                 <div className="text-center mb-12">
                     <h2

@@ -98,7 +98,7 @@ export default function MallorcaMapRoutes() {
     }
 
     return (
-        <section className="w-full py-24 bg-background overflow-hidden">
+        <section id="rutas" className="w-full py-24 bg-background overflow-hidden">
             <div className="container mx-auto px-4 max-w-screen-xl">
                 <div className="flex flex-col items-center text-center mb-16">
                     <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-4">
