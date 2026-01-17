@@ -11,7 +11,7 @@ export default async function Navbar() {
             <div className="container flex h-20 items-center mx-auto px-4 max-w-screen-xl justify-between">
                 <Link href="/" className="mr-6 flex items-center space-x-3">
                     <Logo className="h-14 w-auto" />
-                    <span className="font-bold sm:inline-block text-primary text-2xl tracking-tight">
+                    <span className="font-hand font-bold text-3xl text-primary mt-1">
                         Vito Tinto
                     </span>
                 </Link>

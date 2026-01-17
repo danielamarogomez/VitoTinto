@@ -191,9 +191,20 @@ export async function sendBookingRequestToOwner(data: {
     startDate: string
     endDate: string
     totalPrice: number
+    extras?: { name: string; price: number }[]
 }) {
     const ownerEmail = process.env.OWNER_EMAIL || 'danielamarogomez@gmail.com'
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'
+
+    const extrasHtml = data.extras && data.extras.length > 0
+        ? `
+        <div style="margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px;">
+            <p style="margin: 0 0 5px 0; font-weight: bold; font-size: 13px; color: #666;">Servicios Extra:</p>
+            <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #333;">
+                ${data.extras.map(e => `<li>${e.name} (+${e.price}€)</li>`).join('')}
+            </ul>
+        </div>`
+        : ''
 
     console.log(`📧 Enviando notificación de nueva solicitud a: ${ownerEmail}`)
 
@@ -250,6 +261,8 @@ export async function sendBookingRequestToOwner(data: {
                                     <td style="padding: 8px 0; font-weight: bold; text-align: right; color: #722f37; font-size: 18px;">${data.totalPrice}€</td>
                                 </tr>
                             </table>
+                            ${extrasHtml}
+                        </div>
                         </div>
 
                         ${data.customerMessage ? `

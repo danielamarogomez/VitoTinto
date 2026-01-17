@@ -9,11 +9,18 @@ import { toast } from "sonner"
 import { getBusyDates } from "@/app/actions/booking"
 import { createBookingRequest } from "@/app/actions/booking-request"
 
+const EXTRA_SERVICES = [
+    { id: 'baby_seat', name: 'Sillita de bebé', price: 30 },
+    { id: 'paddle_surf', name: 'Paddle Surf', price: 50 },
+    { id: 'surf_kit', name: 'Kit de Surf', price: 40 },
+]
+
 export default function BookingWidget() {
     const [date, setDate] = useState<DateRange | undefined>()
     const [busyDates, setBusyDates] = useState<Date[]>([])
     const [loading, setLoading] = useState(false)
     const [showForm, setShowForm] = useState(false)
+    const [selectedExtras, setSelectedExtras] = useState<string[]>([])
 
     // Datos del formulario
     const [formData, setFormData] = useState({
@@ -45,7 +52,7 @@ export default function BookingWidget() {
         loadBusyDates()
     }, [])
 
-    const calculatePrice = (from: Date, to: Date) => {
+    const calculateBasePrice = (from: Date, to: Date) => {
         const interval = eachDayOfInterval({ start: from, end: addDays(to, -1) })
         let total = 0
         interval.forEach(day => {
@@ -57,6 +64,25 @@ export default function BookingWidget() {
             }
         })
         return total
+    }
+
+    const calculateExtrasPrice = () => {
+        return selectedExtras.reduce((acc, extraId) => {
+            const extra = EXTRA_SERVICES.find(e => e.id === extraId)
+            return acc + (extra?.price || 0)
+        }, 0)
+    }
+
+    const calculateTotal = (from: Date, to: Date) => {
+        return calculateBasePrice(from, to) + calculateExtrasPrice()
+    }
+
+    const toggleExtra = (extraId: string) => {
+        setSelectedExtras(prev =>
+            prev.includes(extraId)
+                ? prev.filter(id => id !== extraId)
+                : [...prev, extraId]
+        )
     }
 
     const isDateDisabled = (day: Date) => {
@@ -86,16 +112,18 @@ export default function BookingWidget() {
 
         setLoading(true)
         try {
-            const price = calculatePrice(date.from, date.to)
+            const totalPrice = calculateTotal(date.from, date.to)
+            const extrasData = selectedExtras.map(id => EXTRA_SERVICES.find(e => e.id === id)).filter(Boolean) as { id: string; name: string; price: number }[]
 
             await createBookingRequest({
                 startDate: format(date.from, 'yyyy-MM-dd'),
                 endDate: format(date.to, 'yyyy-MM-dd'),
-                totalPrice: price,
+                totalPrice,
                 customerName: formData.name,
                 customerEmail: formData.email,
                 customerPhone: formData.phone,
-                customerMessage: formData.message
+                customerMessage: formData.message,
+                extras: extrasData // Enviamos los extras
             })
 
             toast.success('¡Solicitud enviada!', {
@@ -105,6 +133,7 @@ export default function BookingWidget() {
             // Resetear formulario
             setDate(undefined)
             setFormData({ name: '', email: '', phone: '', message: '' })
+            setSelectedExtras([])
             setShowForm(false)
         } catch (error: any) {
             toast.error('Error', { description: error.message || 'No se pudo enviar la solicitud' })
@@ -133,6 +162,32 @@ export default function BookingWidget() {
                         />
 
                         <div className="mt-6 w-full space-y-4">
+                            {/* Extras Selection */}
+                            <div className="space-y-2">
+                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Servicios Extra</p>
+                                <div className="grid grid-cols-1 gap-2">
+                                    {EXTRA_SERVICES.map((extra) => (
+                                        <div
+                                            key={extra.id}
+                                            onClick={() => toggleExtra(extra.id)}
+                                            className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${selectedExtras.includes(extra.id)
+                                                ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                                                : 'border-border hover:border-primary/50'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedExtras.includes(extra.id) ? 'bg-primary border-primary' : 'border-muted-foreground'
+                                                    }`}>
+                                                    {selectedExtras.includes(extra.id) && <div className="w-2 h-2 bg-white rounded-sm" />}
+                                                </div>
+                                                <span className="text-sm font-medium">{extra.name}</span>
+                                            </div>
+                                            <span className="text-sm font-bold text-primary">+{extra.price}€</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
                             <div className="flex justify-between text-sm p-3 bg-muted rounded-lg">
                                 <div>
                                     <span className="block text-muted-foreground text-xs">CHECK-IN</span>
@@ -154,9 +209,9 @@ export default function BookingWidget() {
                                 </button>
                                 <p className="text-xs text-center text-muted-foreground mt-2">
                                     Precio estimado: <span className="text-primary font-bold text-sm">
-                                        {date?.from && date?.to ? `${calculatePrice(date.from, date.to)}€` : '0€'}
+                                        {date?.from && date?.to ? `${calculateTotal(date.from, date.to)}€` : '0€'}
                                     </span>
-                                    {date?.from && date?.to && <span className="block text-[10px] mt-0.5">* IVA incluido</span>}
+                                    {date?.from && date?.to && <span className="block text-[10px] mt-0.5">* IVA incluido | Extras incluidos</span>}
                                 </p>
                             </div>
                         </div>
@@ -168,8 +223,25 @@ export default function BookingWidget() {
                             <p className="text-xs text-muted-foreground">
                                 {date?.from && format(date.from, 'dd MMM', { locale: es })} - {date?.to && format(date.to, 'dd MMM yyyy', { locale: es })}
                             </p>
-                            <p className="text-sm font-bold text-primary mt-2">
-                                {date?.from && date?.to && `${calculatePrice(date.from, date.to)}€`} <span className="text-[10px] font-normal">IVA incl.</span>
+
+                            {selectedExtras.length > 0 && (
+                                <div className="mt-2 pt-2 border-t border-border/50">
+                                    <p className="text-xs text-muted-foreground mb-1">Extras:</p>
+                                    <div className="flex flex-wrap gap-1">
+                                        {selectedExtras.map(id => {
+                                            const extra = EXTRA_SERVICES.find(e => e.id === id)
+                                            return extra ? (
+                                                <span key={id} className="text-[10px] bg-background border px-2 py-0.5 rounded-full">
+                                                    {extra.name} (+{extra.price}€)
+                                                </span>
+                                            ) : null
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            <p className="text-sm font-bold text-primary mt-3 pt-2 border-t border-border">
+                                Total: {date?.from && date?.to && `${calculateTotal(date.from, date.to)}€`} <span className="text-[10px] font-normal">IVA incl.</span>
                             </p>
                         </div>
 

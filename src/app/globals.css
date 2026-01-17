@@ -2,17 +2,17 @@
 
 :root {
   /* Vito Tinto Theme - Merlot & Earth */
-  --background: #fdfcf8;
-  /* Cream/Off-white */
+  --background: #FFFBF2;
+  /* Warm Sand */
   --foreground: #2d2a2e;
-  /* Dark slate */
+  /* Dark Slate */
 
   --primary: #722f37;
   /* Merlot/Wine Red */
   --primary-foreground: #ffffff;
 
   --secondary: #e6dace;
-  /* Light Beig/Stone */
+  /* Light Beig */
   --secondary-foreground: #2d2a2e;
 
   --muted: #f3f0e8;
@@ -37,30 +37,8 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1a191a;
-    --foreground: #ededed;
-
-    --primary: #9e4751;
-    /* Lighter wine for dark mode */
-    --primary-foreground: #ffffff;
-
-    --secondary: #2d2a2e;
-    --secondary-foreground: #ededed;
-
-    --muted: #2d2a2e;
-    --muted-foreground: #a1a1aa;
-
-    --accent: #2d2a2e;
-    --accent-foreground: #ededed;
-
-    --border: #2d2a2e;
-  }
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-patrick), cursive;
 }
 
 body {

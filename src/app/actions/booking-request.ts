@@ -11,6 +11,7 @@ interface BookingRequestData {
     customerEmail: string
     customerPhone: string
     customerMessage?: string
+    extras?: { id: string; name: string; price: number }[]
 }
 
 export async function createBookingRequest(data: BookingRequestData) {
@@ -32,7 +33,8 @@ export async function createBookingRequest(data: BookingRequestData) {
                 customer_phone: data.customerPhone,
                 customer_message: data.customerMessage || '',
                 status: 'pending_approval', // Esperando aprobación de Andrea
-                user_id: null // Forzamos null para evitar errores de FK/Perfil. Tratamos como invitado.
+                user_id: null, // Forzamos null para evitar errores de FK/Perfil. Tratamos como invitado.
+                selected_extras: data.extras || [] // Guardamos los extras en la DB
             })
             .select()
             .single()
@@ -52,7 +54,8 @@ export async function createBookingRequest(data: BookingRequestData) {
                 customerMessage: data.customerMessage || 'Sin mensaje',
                 startDate: data.startDate,
                 endDate: data.endDate,
-                totalPrice: data.totalPrice
+                totalPrice: data.totalPrice,
+                extras: data.extras
             })
         } catch (emailError) {
             console.error('Error sending email to owner:', emailError)
