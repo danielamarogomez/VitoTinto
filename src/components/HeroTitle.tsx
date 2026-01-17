@@ -19,7 +19,10 @@ export default function HeroTitle() {
             className="flex flex-col gap-4 text-center lg:text-left text-white lg:flex-1 transition-transform duration-75 ease-out"
             style={{ transform: `translateY(${offset}px)` }}
         >
-            <h1 className="font-hand font-bold tracking-wide sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-lg leading-[0.9]">
+            <h1
+                className="font-bold tracking-wide sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-lg leading-[0.9]"
+                style={{ fontFamily: 'var(--font-patrick), cursive' }}
+            >
                 Libertad sobre ruedas <br className="hidden lg:block" />
                 <span className="text-secondary block mt-2">
                     Estilo Vito Tinto
