@@ -53,14 +53,14 @@ const routes = [
         description: "Andratx y la costa oeste. Magia al atardecer.",
         longDescription: "La costa de Ponent tiene una luz especial. Conduce hasta el Mirador de Sa Foradada para ver caer el sol sobre el mar o visita el puerto de Andratx. Carreteras tranquilas y vistas infinitas.",
         latlng: [39.75, 2.62] as [number, number],
-        image: "/images/rutas/ponent/1.jpg", // Foto placeholder (Cambiar en carpeta public/images/rutas/ponent)
+        image: "/images/rutas/ponent/1.jpg", // Atardecer naranja brutal
         type: "Relax",
         duration: "1 día",
         icon: <Compass className="h-5 w-5" />,
         gallery: [
-            "/images/rutas/ponent/1.jpg",
-            "/images/rutas/ponent/2.jpg",
-            "/images/rutas/ponent/3.jpg"
+            "/images/rutas/ponent/1.jpg", // Atardecer
+            "/images/rutas/ponent/2.jpg", // Puerto Andratx barcos
+            "/images/rutas/ponent/3.jpg"  // Costa aérea atardecer
         ]
     }
 ]
