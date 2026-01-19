@@ -25,11 +25,11 @@ export default function HeroTitle() {
             >
                 Libertad sobre ruedas <br className="hidden lg:block" />
                 <span className="text-secondary block mt-2">
-                    Estilo Vito Tinto
+                    Con Vito Tinto
                 </span>
             </h1>
             <p className="mx-auto lg:mx-0 max-w-[700px] text-lg sm:text-xl text-gray-200 drop-shadow">
-                Escápate de la rutina con nuestra camper premium. Equipada con todo lo necesario para tu aventura, con el toque de elegancia que mereces.
+                Escápate de la rutina con nuestra camper. Equipada con todo lo necesario para tu aventura, con el toque de elegancia que mereces.
             </p>
         </div>
     )

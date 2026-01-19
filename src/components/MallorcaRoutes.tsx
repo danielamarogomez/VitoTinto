@@ -13,102 +13,106 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { 
 
 // Datos de las rutas con coordenadas reales [lat, lng]
 // Datos de las rutas con coordenadas reales [lat, lng]
+// Datos de las rutas con coordenadas reales [lat, lng] y fotos LOCALES (Gestionables por el usuario)
 const routes = [
     {
         id: "tramuntana",
         title: "Sierra de Tramuntana",
-        description: "De Valldemossa a Formentor. Patrimonio de la Humanidad. La ruta más espectacular.",
-        longDescription: "La Sierra de Tramuntana es la joya de Mallorca. Recorre la mítica carretera de Sa Calobra, visita pueblos de cuento como Valldemossa y Deià, y termina dándote un baño en las aguas cristalinas de Cala Deià. Imprescindible para los amantes de la conducción y la montaña.",
-        latlng: [39.79, 2.75] as [number, number],
-        image: "https://images.unsplash.com/photo-1537042145420-22c608f6159c?q=80&w=2670&auto=format&fit=crop", // Sa Calobra
+        description: "De Valldemossa a Formentor. Patrimonio de la Humanidad.",
+        longDescription: "La ruta por excelencia. Empieza tomando un café y una coca de patata en Valldemossa, piérdete por las calles de Deià y baja hasta sa Calobra para desafiar sus curvas. La Serra es el alma salvaje de Mallorca.",
+        latlng: [39.71, 2.62] as [number, number],
+        image: "/images/rutas/tramuntana/2.jpg", // Valldemossa como principal
         type: "Montaña",
         duration: "2-3 días",
         icon: <Mountain className="h-5 w-5" />,
         gallery: [
-            "https://images.unsplash.com/photo-1537042145420-22c608f6159c?q=80&w=2670&auto=format&fit=crop", // Sa Calobra
-            "https://images.unsplash.com/photo-1518182170546-0766ce6fec56?q=80&w=2670&auto=format&fit=crop", // Valldemossa
-            "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=2565&auto=format&fit=crop"  // Cala Deià vibes
+            "/images/rutas/tramuntana/1.jpg", // Cala
+            "/images/rutas/tramuntana/2.jpg", // Valldemossa
+            "/images/rutas/tramuntana/3.jpg"  // Formentor
         ]
     },
     {
         id: "southeast",
         title: "Calas & Turquesa",
-        description: "El Caribe mallorquín. Caló des Moro, Mondragó y Es Trenc.",
-        longDescription: "Si buscas ese azul turquesa imposible, pon rumbo al sureste. Desde el icónico Caló des Moro hasta la arena blanca infinita de Es Trenc. Pueblos como Santanyí te esperan con mercados locales y una gastronomía increíble. Ideal para relax total.",
-        latlng: [39.36, 3.12] as [number, number],
-        image: "https://images.unsplash.com/photo-1507718919630-f5a020c6a32d?q=80&w=2670&auto=format&fit=crop", // Caló des Moro style
+        description: "El Caribe mallorquín. Caló des Moro y Es Trenc.",
+        longDescription: "Baja al sur para encontrar el agua más cristalina. Desde el famoso arco de Es Pontàs hasta la arena blanca de Es Trenc. Es la zona perfecta para aparcar la furgo cerca del mar y desconectar.",
+        latlng: [39.32, 3.12] as [number, number],
+        image: "/images/rutas/calas/1.jpg", // Foto placeholder (Cambiar en carpeta public/images/rutas/calas)
         type: "Playa",
         duration: "1-2 días",
         icon: <Waves className="h-5 w-5" />,
         gallery: [
-            "https://images.unsplash.com/photo-1507718919630-f5a020c6a32d?q=80&w=2670&auto=format&fit=crop", // Calas
-            "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2574&auto=format&fit=crop", // Es Trenc
-            "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?q=80&w=2672&auto=format&fit=crop"  // Agua cristalina
+            "/images/rutas/calas/1.jpg",
+            "/images/rutas/calas/2.jpg",
+            "/images/rutas/calas/3.jpg"
         ]
     },
     {
         id: "volent",
-        title: "La Ruta del Sol",
-        description: "Andratx y la costa oeste. Los mejores atardeceres de la isla.",
-        longDescription: "La costa de Ponent es magia pura al atardecer. Conduce hasta el mirador de Sa Foradada o tómate algo en Banyalbufar viendo caer el sol. Una ruta romántica, tranquila y llena de miradores que te dejarán sin aliento.",
-        latlng: [39.65, 2.50] as [number, number], // Ajustado para que quede mejor en el mapa
-        image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=2670&auto=format&fit=crop", // Sa Foradada sunset
+        title: "Puestas de Sol",
+        description: "Andratx y la costa oeste. Magia al atardecer.",
+        longDescription: "La costa de Ponent tiene una luz especial. Conduce hasta el Mirador de Sa Foradada para ver caer el sol sobre el mar o visita el puerto de Andratx. Carreteras tranquilas y vistas infinitas.",
+        latlng: [39.75, 2.62] as [number, number],
+        image: "/images/rutas/ponent/1.jpg", // Foto placeholder (Cambiar en carpeta public/images/rutas/ponent)
         type: "Relax",
         duration: "1 día",
         icon: <Compass className="h-5 w-5" />,
         gallery: [
-            "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=2670&auto=format&fit=crop", // Sunset
-            "https://images.unsplash.com/photo-1534234828569-786d5267bf7b?q=80&w=2670&auto=format&fit=crop", // Costa rocosa
-            "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?q=80&w=2672&auto=format&fit=crop"  // Mar abierto
+            "/images/rutas/ponent/1.jpg",
+            "/images/rutas/ponent/2.jpg",
+            "/images/rutas/ponent/3.jpg"
         ]
     }
 ]
+
+// Corrección manual de coordenadas para Ponent (estaba duplicada con Tramuntana en el copy-paste anterior si no se fija)
+routes[2].latlng = [39.69, 2.56]; // Valldemossa/Deià coast area (Sa Foradada)
+routes[0].latlng = [39.75, 2.80]; // Tramuntana central (Lluc/Escorca) para diferenciar
 
 export default function MallorcaMapRoutes() {
     const [selectedId, setSelectedId] = useState<string | null>(null)
     const [showFullDetails, setShowFullDetails] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
     const [L, setL] = useState<any>(null)
+    // Clave única para forzar el remontaje limpio del mapa si es necesario
+    const [mapKey, setMapKey] = useState("map-init")
 
     const selectedRoute = routes.find(r => r.id === selectedId)
 
     useEffect(() => {
         setIsMounted(true)
+        setMapKey(`map-${Date.now()}`) // Forzar nueva key al montar/recargar
         import("leaflet").then((leaf) => {
             setL(leaf)
         })
     }, [])
 
-    if (!isMounted || !L) return <div className="h-[600px] w-full bg-muted animate-pulse rounded-[40px]" />
+    // Función segura para crear iconos. Si L no está listo, devuelve undefined (usa el default por un milisegundo)
+    const getPinIcon = (routeId: string) => {
+        if (!L) return undefined;
 
-    // Memorizar iconos para evitar re-renderizados constantes que rompen Leaflet
-    const pinIcons = useMemo(() => {
-        if (!L) return {}
+        const isSelected = selectedId === routeId;
+        const color = '#722f37';
+        // Simplificamos la escala para evitar cálculos complejos en el CSS string
+        const sizeClass = isSelected ? "width: 56px; height: 56px; transform: scale(1.1);" : "width: 44px; height: 44px;";
+        const zIndex = isSelected ? 100 : 10;
 
-        const icons: Record<string, any> = {}
-        routes.forEach(route => {
-            const isSelected = selectedId === route.id;
-            const color = '#722f37';
-            const scale = isSelected ? 'scale-125' : 'hover:scale-110';
-            const zIndex = isSelected ? 100 : 1;
-
-            icons[route.id] = L.divIcon({
-                className: "custom-pin-icon",
-                html: `
-                    <div class="relative flex flex-col items-center justify-center transform transition-transform duration-300 ${scale} -mt-8" style="z-index:${zIndex}">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="2" width="48" height="48" class="drop-shadow-xl">
-                            <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                        </svg>
-                        <div class="w-3 h-1 bg-black/30 rounded-full blur-[2px] mt-[-2px]"></div>
-                    </div>
-                `,
-                iconSize: [48, 48],
-                iconAnchor: [24, 48],
-                popupAnchor: [0, -48]
-            })
+        return L.divIcon({
+            className: "custom-pin-icon-wrapper", // Clase vacía para evitar estilos default de Leaflet que molesten
+            html: `
+                <div style="position: relative; display: flex; justify-content: center; align-items: center; ${sizeClass} transition: all 0.3s ease; z-index: ${zIndex};">
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.5" style="width: 100%; height: 100%; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.3));">
+                        <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            `,
+            iconSize: isSelected ? [56, 56] : [44, 44],
+            iconAnchor: isSelected ? [28, 56] : [22, 44], // Punta exacta abajo centro
+            popupAnchor: [0, -50]
         })
-        return icons
-    }, [L, selectedId])
+    }
+
+    if (!isMounted || !L) return <div className="h-[600px] w-full bg-muted animate-pulse rounded-[40px]" />
 
     return (
         <section id="rutas" className="w-full py-24 bg-background overflow-hidden">
@@ -130,6 +134,7 @@ export default function MallorcaMapRoutes() {
                     {/* Mapa Real de Leaflet */}
                     <div className="relative flex-1 rounded-[40px] overflow-hidden border border-border shadow-2xl z-10">
                         <MapContainer
+                            key={mapKey} // CRUCIAL: Esto recrea el mapa si cambia, evitando errores de reutilización
                             center={[39.63, 2.9]}
                             zoom={9}
                             scrollWheelZoom={false}
@@ -145,7 +150,7 @@ export default function MallorcaMapRoutes() {
                                 <Marker
                                     key={route.id}
                                     position={route.latlng}
-                                    icon={pinIcons[route.id]}
+                                    icon={getPinIcon(route.id)}
                                     eventHandlers={{
                                         click: () => setSelectedId(route.id),
                                     }}

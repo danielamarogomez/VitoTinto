@@ -34,10 +34,10 @@ export default function GallerySection() {
                         className="text-4xl lg:text-5xl font-bold text-primary mb-4"
                         style={{ fontFamily: 'var(--font-patrick), cursive' }}
                     >
-                        La Protagonista
+                        Vito Tinto
                     </h2>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Más que una furgoneta. Tu ventana primera fila a los mejores amaneceres de la isla.
+                        Más que una furgoneta.
                     </p>
                 </div>
 
