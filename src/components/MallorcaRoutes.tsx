@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import { MapPin, Mountain, Waves, Compass, X, Clock, ChevronRight, Info, Camera, Map as MapIcon } from "lucide-react"
 import "leaflet/dist/leaflet.css"
@@ -81,26 +81,34 @@ export default function MallorcaMapRoutes() {
 
     if (!isMounted || !L) return <div className="h-[600px] w-full bg-muted animate-pulse rounded-[40px]" />
 
-    // Función para crear icono de chincheta (Pin) visible
-    const createPinIcon = (isSelected: boolean) => {
-        const color = '#722f37'; // Tinto
-        const scale = isSelected ? 'scale-125' : 'hover:scale-110';
+    // Memorizar iconos para evitar re-renderizados constantes que rompen Leaflet
+    const pinIcons = useMemo(() => {
+        if (!L) return {}
 
-        return L.divIcon({
-            className: "custom-pin-icon",
-            html: `
-                <div class="relative flex flex-col items-center justify-center transform transition-transform duration-300 ${scale} -mt-8">
-                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="2" width="48" height="48" class="drop-shadow-xl">
-                        <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                    </svg>
-                    <div class="w-3 h-1 bg-black/30 rounded-full blur-[2px] mt-[-2px]"></div>
-                </div>
-            `,
-            iconSize: [48, 48],
-            iconAnchor: [24, 48], // La punta del pin (abajo centro)
-            popupAnchor: [0, -48] // El popup sale arriba
+        const icons: Record<string, any> = {}
+        routes.forEach(route => {
+            const isSelected = selectedId === route.id;
+            const color = '#722f37';
+            const scale = isSelected ? 'scale-125' : 'hover:scale-110';
+            const zIndex = isSelected ? 100 : 1;
+
+            icons[route.id] = L.divIcon({
+                className: "custom-pin-icon",
+                html: `
+                    <div class="relative flex flex-col items-center justify-center transform transition-transform duration-300 ${scale} -mt-8" style="z-index:${zIndex}">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="2" width="48" height="48" class="drop-shadow-xl">
+                            <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                        </svg>
+                        <div class="w-3 h-1 bg-black/30 rounded-full blur-[2px] mt-[-2px]"></div>
+                    </div>
+                `,
+                iconSize: [48, 48],
+                iconAnchor: [24, 48],
+                popupAnchor: [0, -48]
+            })
         })
-    }
+        return icons
+    }, [L, selectedId])
 
     return (
         <section id="rutas" className="w-full py-24 bg-background overflow-hidden">
@@ -137,7 +145,7 @@ export default function MallorcaMapRoutes() {
                                 <Marker
                                     key={route.id}
                                     position={route.latlng}
-                                    icon={createPinIcon(selectedId === route.id)}
+                                    icon={pinIcons[route.id]}
                                     eventHandlers={{
                                         click: () => setSelectedId(route.id),
                                     }}
