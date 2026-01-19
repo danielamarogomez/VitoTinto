@@ -12,53 +12,54 @@ const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), 
 const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { ssr: false })
 
 // Datos de las rutas con coordenadas reales [lat, lng]
+// Datos de las rutas con coordenadas reales [lat, lng]
 const routes = [
     {
         id: "tramuntana",
         title: "Sierra de Tramuntana",
-        description: "De Valldemossa a Formentor. Patrimonio de la Humanidad por la UNESCO. Curvas infinitas y vistas de postal.",
-        longDescription: "La Sierra de Tramuntana es la joya de la corona de Mallorca. Esta ruta te llevará por carreteras que serpentean entre olivos milenarios y acantilados que caen verticalmente sobre el mar. No te pierdas la puesta de sol en Sa Foradada y el café en la plaza de Sóller. Es la esencia de la isla salvaje.",
-        latlng: [39.79, 2.85] as [number, number],
-        image: "https://images.unsplash.com/photo-1512411874246-85750865842f?q=80&w=2670&auto=format&fit=crop",
+        description: "De Valldemossa a Formentor. Patrimonio de la Humanidad. La ruta más espectacular.",
+        longDescription: "La Sierra de Tramuntana es la joya de Mallorca. Recorre la mítica carretera de Sa Calobra, visita pueblos de cuento como Valldemossa y Deià, y termina dándote un baño en las aguas cristalinas de Cala Deià. Imprescindible para los amantes de la conducción y la montaña.",
+        latlng: [39.79, 2.75] as [number, number],
+        image: "https://images.unsplash.com/photo-1537042145420-22c608f6159c?q=80&w=2670&auto=format&fit=crop", // Sa Calobra
         type: "Montaña",
         duration: "2-3 días",
         icon: <Mountain className="h-5 w-5" />,
         gallery: [
-            "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?q=80&w=2565&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1512411874246-85750865842f?q=80&w=2670&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1544971587-b842c27f8e14?q=80&w=2574&auto=format&fit=crop"
+            "https://images.unsplash.com/photo-1537042145420-22c608f6159c?q=80&w=2670&auto=format&fit=crop", // Sa Calobra
+            "https://images.unsplash.com/photo-1518182170546-0766ce6fec56?q=80&w=2670&auto=format&fit=crop", // Valldemossa
+            "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=2565&auto=format&fit=crop"  // Cala Deià vibes
         ]
     },
     {
         id: "southeast",
-        title: "Calas & Santanyí",
-        description: "Cala Mondragó, Es Trenc y el auténtico sureste. Aguas turquesas y pueblos de piedra dorada.",
-        longDescription: "El sureste de Mallorca es famoso por sus calas de arena blanca y aguas poco profundas que parecen piscinas naturales. Pueblos con encanto como Santanyí ofrecen mercados locales vibrantes. Es la ruta perfecta para desconectar y disfrutar del mar en su estado más puro.",
+        title: "Calas & Turquesa",
+        description: "El Caribe mallorquín. Caló des Moro, Mondragó y Es Trenc.",
+        longDescription: "Si buscas ese azul turquesa imposible, pon rumbo al sureste. Desde el icónico Caló des Moro hasta la arena blanca infinita de Es Trenc. Pueblos como Santanyí te esperan con mercados locales y una gastronomía increíble. Ideal para relax total.",
         latlng: [39.36, 3.12] as [number, number],
-        image: "https://images.unsplash.com/photo-1621258683103-62547b97368a?q=80&w=2670&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1507718919630-f5a020c6a32d?q=80&w=2670&auto=format&fit=crop", // Caló des Moro style
         type: "Playa",
         duration: "1-2 días",
         icon: <Waves className="h-5 w-5" />,
         gallery: [
-            "https://images.unsplash.com/photo-1621258683103-62547b97368a?q=80&w=2670&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?q=80&w=2672&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2574&auto=format&fit=crop"
+            "https://images.unsplash.com/photo-1507718919630-f5a020c6a32d?q=80&w=2670&auto=format&fit=crop", // Calas
+            "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2574&auto=format&fit=crop", // Es Trenc
+            "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?q=80&w=2672&auto=format&fit=crop"  // Agua cristalina
         ]
     },
     {
         id: "volent",
-        title: "Secretos de Ponent",
-        description: "Andratx, Estellencs y Banyalbufar. Atardeceres mágicos desde los acantilados de la costa oeste.",
-        longDescription: "La costa oeste o Ponent es la menos transitada y quizás la más mágica. Aquí el tiempo parece haberse detenido en terrazas de piedra sobre el mediterráneo. Verás los mejores atardeceres de tu vida desde la comodidad de tu Vito Tinto en cualquiera de sus miradores naturales.",
-        latlng: [39.58, 2.40] as [number, number],
-        image: "https://images.unsplash.com/photo-1527437041887-39906d4e7436?q=80&w=2670&auto=format&fit=crop",
+        title: "La Ruta del Sol",
+        description: "Andratx y la costa oeste. Los mejores atardeceres de la isla.",
+        longDescription: "La costa de Ponent es magia pura al atardecer. Conduce hasta el mirador de Sa Foradada o tómate algo en Banyalbufar viendo caer el sol. Una ruta romántica, tranquila y llena de miradores que te dejarán sin aliento.",
+        latlng: [39.65, 2.50] as [number, number], // Ajustado para que quede mejor en el mapa
+        image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=2670&auto=format&fit=crop", // Sa Foradada sunset
         type: "Relax",
         duration: "1 día",
         icon: <Compass className="h-5 w-5" />,
         gallery: [
-            "https://images.unsplash.com/photo-1527437041887-39906d4e7436?q=80&w=2670&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?q=80&w=2672&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2670&auto=format&fit=crop"
+            "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=2670&auto=format&fit=crop", // Sunset
+            "https://images.unsplash.com/photo-1534234828569-786d5267bf7b?q=80&w=2670&auto=format&fit=crop", // Costa rocosa
+            "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?q=80&w=2672&auto=format&fit=crop"  // Mar abierto
         ]
     }
 ]
