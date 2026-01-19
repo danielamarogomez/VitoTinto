@@ -80,20 +80,24 @@ export default function MallorcaMapRoutes() {
 
     if (!isMounted || !L) return <div className="h-[600px] w-full bg-muted animate-pulse rounded-[40px]" />
 
-    // Función para crear icono con foto circular
-    const createPhotoIcon = (image: string, isSelected: boolean) => {
+    // Función para crear icono de chincheta (Pin) visible
+    const createPinIcon = (isSelected: boolean) => {
+        const color = '#722f37'; // Tinto
+        const scale = isSelected ? 'scale-125' : 'hover:scale-110';
+
         return L.divIcon({
-            className: "custom-photo-icon",
+            className: "custom-pin-icon",
             html: `
-                <div class="relative flex items-center justify-center">
-                    <div class="absolute w-12 h-12 bg-primary/20 rounded-full animate-ping ${isSelected ? 'opacity-40' : 'opacity-0'}"></div>
-                    <div class="relative w-10 h-10 rounded-full border-2 border-white shadow-xl overflow-hidden transform transition-all hover:scale-110 active:scale-90 ${isSelected ? 'scale-125 border-primary ring-4 ring-primary/20' : ''}">
-                        <img src="${image}" class="w-full h-full object-cover" />
-                    </div>
+                <div class="relative flex flex-col items-center justify-center transform transition-transform duration-300 ${scale} -mt-8">
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="2" width="48" height="48" class="drop-shadow-xl">
+                        <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="w-3 h-1 bg-black/30 rounded-full blur-[2px] mt-[-2px]"></div>
                 </div>
             `,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
+            iconSize: [48, 48],
+            iconAnchor: [24, 48], // La punta del pin (abajo centro)
+            popupAnchor: [0, -48] // El popup sale arriba
         })
     }
 
@@ -132,7 +136,7 @@ export default function MallorcaMapRoutes() {
                                 <Marker
                                     key={route.id}
                                     position={route.latlng}
-                                    icon={createPhotoIcon(route.image, selectedId === route.id)}
+                                    icon={createPinIcon(selectedId === route.id)}
                                     eventHandlers={{
                                         click: () => setSelectedId(route.id),
                                     }}
