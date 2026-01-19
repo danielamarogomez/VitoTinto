@@ -37,14 +37,14 @@ const routes = [
         description: "El Caribe mallorquín. Caló des Moro y Es Trenc.",
         longDescription: "Baja al sur para encontrar el agua más cristalina. Desde el famoso arco de Es Pontàs hasta la arena blanca de Es Trenc. Es la zona perfecta para aparcar la furgo cerca del mar y desconectar.",
         latlng: [39.32, 3.12] as [number, number],
-        image: "/images/rutas/calas/1.jpg", // Foto placeholder (Cambiar en carpeta public/images/rutas/calas)
+        image: "/images/rutas/calas/1.jpg", // Caló des Moro espectacular
         type: "Playa",
         duration: "1-2 días",
         icon: <Waves className="h-5 w-5" />,
         gallery: [
-            "/images/rutas/calas/1.jpg",
-            "/images/rutas/calas/2.jpg",
-            "/images/rutas/calas/3.jpg"
+            "/images/rutas/calas/1.jpg", // Caló des Moro
+            "/images/rutas/calas/2.jpg", // Es Trenc arena blanca
+            "/images/rutas/calas/3.jpg"  // Beach Club / Puesta de sol
         ]
     },
     {
@@ -125,9 +125,7 @@ export default function MallorcaMapRoutes() {
                     <h2 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-4">
                         Tus Rutas Tinto
                     </h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl px-4">
-                        Haz clic en las fotos del mapa para descubrir los mejores rincones de la Roqueta.
-                    </p>
+
                 </div>
 
                 <div className="relative flex flex-col lg:flex-row gap-8 items-stretch h-[700px]">

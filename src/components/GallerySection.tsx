@@ -1,65 +1,123 @@
 "use client"
 
+import { useState, useRef } from "react"
 import Image from "next/image"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const GALLERY_IMAGES = [
-    {
-        src: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=800&auto=format&fit=crop",
-        alt: "Vito Tinto Interior Chill",
-        span: "md:col-span-2 md:row-span-2" // Grande principal
-    },
-    {
-        src: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop",
-        alt: "Ruta por la costa",
-        span: "md:col-span-1 md:row-span-1"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?q=80&w=800&auto=format&fit=crop",
-        alt: "Atardecer en Mallorca",
-        span: "md:col-span-1 md:row-span-1"
-    },
-    {
-        src: "https://images.unsplash.com/photo-1629127712419-450f63b45a05?q=80&w=800&auto=format&fit=crop", // Detalle interior o café
-        alt: "Despertar en la naturaleza",
-        span: "md:col-span-2 md:row-span-1" // Ancha abajo
-    }
+    { src: "/images/vito/v6.jpg", alt: "Cena bajo las estrellas" },
+    { src: "/images/vito/v1.jpg", alt: "Vito Tinto en el Faro" },
+    { src: "/images/vito/v7.jpg", alt: "Fachada con encanto" },
+    { src: "/images/vito/v2.jpg", alt: "Interior cálido" },
+    { src: "/images/vito/v8.jpg", alt: "Café en la carretera" },
+    { src: "/images/vito/v3.jpg", alt: "Vistas infinitas" },
+    { src: "/images/vito/v9.jpg", alt: "Noches de lectura" },
+    { src: "/images/vito/v4.jpg", alt: "Cama confortable" },
+    { src: "/images/vito/v10.jpg", alt: "Desayuno Mediterráneo" },
+    { src: "/images/vito/v5.jpg", alt: "Cocina equipada" }
 ]
 
 export default function GallerySection() {
+    const scrollRef = useRef<HTMLDivElement>(null)
+    const [activeIndex, setActiveIndex] = useState(0)
+
+    const scrollToIndex = (index: number) => {
+        if (!scrollRef.current) return
+        const width = scrollRef.current.offsetWidth
+        scrollRef.current.scrollTo({
+            left: index * width,
+            behavior: "smooth"
+        })
+        setActiveIndex(index)
+    }
+
+    const next = () => {
+        const nextIndex = (activeIndex + 1) % GALLERY_IMAGES.length
+        scrollToIndex(nextIndex)
+    }
+
+    const prev = () => {
+        const prevIndex = (activeIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length
+        scrollToIndex(prevIndex)
+    }
+
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const width = e.currentTarget.offsetWidth
+        const index = Math.round(e.currentTarget.scrollLeft / width)
+        if (index !== activeIndex) {
+            setActiveIndex(index)
+        }
+    }
+
     return (
-        <section id="la-furgo" className="py-20 bg-background">
+        <section id="la-furgo" className="py-20 bg-background overflow-hidden">
             <div className="container mx-auto px-4 md:px-6 max-w-screen-xl">
-                <div className="text-center mb-12">
+                <div className="text-center mb-10">
                     <h2
                         className="text-4xl lg:text-5xl font-bold text-primary mb-4"
                         style={{ fontFamily: 'var(--font-patrick), cursive' }}
                     >
-                        Vito Tinto
+                        Nuestra Vito Tinto
                     </h2>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Más que una furgoneta.
+                        Desliza para ver cada rincón de tu próximo hogar sobre ruedas.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 h-[120vh] md:h-[600px]">
-                    {GALLERY_IMAGES.map((img, idx) => (
-                        <div
-                            key={idx}
-                            className={`relative rounded-2xl overflow-hidden shadow-lg group ${img.span}`}
-                        >
-                            <Image
-                                src={img.src}
-                                alt={img.alt}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                                <span className="text-white font-medium text-lg font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>
-                                    {img.alt}
-                                </span>
+                <div className="relative max-w-4xl mx-auto group">
+                    {/* Botones de Navegación */}
+                    <button
+                        onClick={prev}
+                        className="absolute -left-4 lg:-left-12 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/90 text-primary shadow-lg hover:bg-white transition-all opacity-0 group-hover:opacity-100 hidden md:block border border-primary/5"
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                        onClick={next}
+                        className="absolute -right-4 lg:-right-12 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/90 text-primary shadow-lg hover:bg-white transition-all opacity-0 group-hover:opacity-100 hidden md:block border border-primary/5"
+                    >
+                        <ChevronRight className="h-6 w-6" />
+                    </button>
+
+                    {/* Carrusel */}
+                    <div
+                        ref={scrollRef}
+                        onScroll={handleScroll}
+                        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 pb-4 px-4"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                        {GALLERY_IMAGES.map((img, idx) => (
+                            <div
+                                key={idx}
+                                className="flex-none w-full md:w-[700px] aspect-[4/3] md:aspect-[3/2] snap-center relative rounded-[2rem] overflow-hidden shadow-xl border border-primary/5 bg-muted"
+                            >
+                                <Image
+                                    src={img.src}
+                                    alt={img.alt}
+                                    fill
+                                    className="object-cover"
+                                    priority={idx === 0}
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+                                    <p className="text-white text-lg font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>
+                                        {img.alt}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+
+                    {/* Indicadores (Dots) */}
+                    <div className="flex justify-center gap-2.5 mt-4">
+                        {GALLERY_IMAGES.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => scrollToIndex(idx)}
+                                className={`h-1.5 transition-all duration-300 rounded-full ${activeIndex === idx ? "w-8 bg-primary" : "w-1.5 bg-primary/10 hover:bg-primary/30"
+                                    }`}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

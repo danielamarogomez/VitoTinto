@@ -142,6 +142,24 @@ export default function BookingWidget() {
         }
     }
 
+    const handleSelectDate = (range: DateRange | undefined) => {
+        if (range?.from && range?.to) {
+            // Verificar si hay días ocupados en el rango seleccionado
+            const interval = eachDayOfInterval({ start: range.from, end: range.to })
+            const hasBusyDates = interval.some(date => isDateDisabled(date))
+
+            if (hasBusyDates) {
+                toast.error("Selección no válida", {
+                    description: "No puedes seleccionar un rango que incluya fechas ya reservadas."
+                })
+                // Mantenemos solo la fecha de inicio
+                setDate({ from: range.from, to: undefined })
+                return
+            }
+        }
+        setDate(range)
+    }
+
     return (
         <div className="w-full max-w-md mx-auto">
             <div className="bg-card border border-border rounded-2xl shadow-xl p-6">
@@ -155,39 +173,13 @@ export default function BookingWidget() {
                         <Calendar
                             mode="range"
                             selected={date}
-                            onSelect={setDate}
+                            onSelect={handleSelectDate}
                             numberOfMonths={1}
                             locale={es}
                             disabled={isDateDisabled}
                         />
 
                         <div className="mt-6 w-full space-y-4">
-                            {/* Extras Selection */}
-                            <div className="space-y-2">
-                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Servicios Extra</p>
-                                <div className="grid grid-cols-1 gap-2">
-                                    {EXTRA_SERVICES.map((extra) => (
-                                        <div
-                                            key={extra.id}
-                                            onClick={() => toggleExtra(extra.id)}
-                                            className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${selectedExtras.includes(extra.id)
-                                                ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                                                : 'border-border hover:border-primary/50'
-                                                }`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedExtras.includes(extra.id) ? 'bg-primary border-primary' : 'border-muted-foreground'
-                                                    }`}>
-                                                    {selectedExtras.includes(extra.id) && <div className="w-2 h-2 bg-white rounded-sm" />}
-                                                </div>
-                                                <span className="text-sm font-medium">{extra.name}</span>
-                                            </div>
-                                            <span className="text-sm font-bold text-primary">+{extra.price}€</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
                             <div className="flex justify-between text-sm p-3 bg-muted rounded-lg">
                                 <div>
                                     <span className="block text-muted-foreground text-xs">CHECK-IN</span>
@@ -205,44 +197,70 @@ export default function BookingWidget() {
                                     disabled={!date?.from || !date?.to}
                                     onClick={handleContinue}
                                 >
-                                    Consultar Disponibilidad
+                                    Continuar y Personalizar
                                 </button>
                                 <p className="text-xs text-center text-muted-foreground mt-2">
-                                    Precio estimado: <span className="text-primary font-bold text-sm">
-                                        {date?.from && date?.to ? `${calculateTotal(date.from, date.to)}€` : '0€'}
+                                    Precio base: <span className="text-primary font-bold text-sm">
+                                        {date?.from && date?.to ? `${calculateBasePrice(date.from, date.to)}€` : '0€'}
                                     </span>
-                                    {date?.from && date?.to && <span className="block text-[10px] mt-0.5">* IVA incluido | Extras incluidos</span>}
                                 </p>
                             </div>
                         </div>
                     </>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="bg-muted/50 p-4 rounded-lg mb-4">
-                            <p className="text-sm font-medium mb-1">Fechas seleccionadas:</p>
-                            <p className="text-xs text-muted-foreground">
-                                {date?.from && format(date.from, 'dd MMM', { locale: es })} - {date?.to && format(date.to, 'dd MMM yyyy', { locale: es })}
-                            </p>
-
-                            {selectedExtras.length > 0 && (
-                                <div className="mt-2 pt-2 border-t border-border/50">
-                                    <p className="text-xs text-muted-foreground mb-1">Extras:</p>
-                                    <div className="flex flex-wrap gap-1">
-                                        {selectedExtras.map(id => {
-                                            const extra = EXTRA_SERVICES.find(e => e.id === id)
-                                            return extra ? (
-                                                <span key={id} className="text-[10px] bg-background border px-2 py-0.5 rounded-full">
-                                                    {extra.name} (+{extra.price}€)
-                                                </span>
-                                            ) : null
-                                        })}
-                                    </div>
+                        <div className="bg-muted/30 p-4 rounded-lg mb-4 border border-border/50">
+                            <div className="flex justify-between items-center mb-4 pb-4 border-b border-border/50">
+                                <div>
+                                    <p className="text-sm font-medium">Fechas seleccionadas:</p>
+                                    <p className="text-xs text-muted-foreground capitalize">
+                                        {date?.from && format(date.from, 'dd MMM', { locale: es })} - {date?.to && format(date.to, 'dd MMM yyyy', { locale: es })}
+                                    </p>
                                 </div>
-                            )}
+                                <button
+                                    type="button"
+                                    onClick={() => setShowForm(false)}
+                                    className="text-xs text-primary hover:underline font-medium"
+                                >
+                                    Cambiar
+                                </button>
+                            </div>
 
-                            <p className="text-sm font-bold text-primary mt-3 pt-2 border-t border-border">
-                                Total: {date?.from && date?.to && `${calculateTotal(date.from, date.to)}€`} <span className="text-[10px] font-normal">IVA incl.</span>
-                            </p>
+                            {/* Extras Selection - MOVED HERE */}
+                            <div className="space-y-3 mb-4">
+                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                                    <span>✨ Personaliza tu viaje</span>
+                                </p>
+                                <div className="grid grid-cols-1 gap-2">
+                                    {EXTRA_SERVICES.map((extra) => (
+                                        <div
+                                            key={extra.id}
+                                            onClick={() => toggleExtra(extra.id)}
+                                            className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all bg-background ${selectedExtras.includes(extra.id)
+                                                    ? 'border-primary ring-1 ring-primary shadow-sm'
+                                                    : 'border-border hover:border-primary/50'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedExtras.includes(extra.id) ? 'bg-primary border-primary' : 'border-muted-foreground'
+                                                    }`}>
+                                                    {selectedExtras.includes(extra.id) && <div className="w-2 h-2 bg-white rounded-sm" />}
+                                                </div>
+                                                <span className="text-sm font-medium">{extra.name}</span>
+                                            </div>
+                                            <span className="text-sm font-bold text-primary">+{extra.price}€</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between items-center pt-3 border-t border-border">
+                                <span className="font-medium text-sm">Total Estimado</span>
+                                <p className="text-xl font-black text-primary">
+                                    {date?.from && date?.to && `${calculateTotal(date.from, date.to)}€`}
+                                </p>
+                            </div>
+                            <p className="text-[10px] text-right text-muted-foreground mt-1">IVA incluido</p>
                         </div>
 
                         <div>

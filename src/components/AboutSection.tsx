@@ -34,16 +34,16 @@ export default function AboutSection() {
                     </div>
 
                     {/* Foto */}
-                    <div className="flex-1 order-1 lg:order-2 w-full max-w-md lg:max-w-full">
-                        <div className="relative aspect-[3/4] lg:aspect-square rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 ease-out">
+                    <div className="flex-1 order-1 lg:order-2 w-full flex justify-center lg:justify-end">
+                        <div className="relative w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 ease-out">
                             <Image
-                                src="https://images.unsplash.com/photo-1542359649-31e03cd4d909?q=80&w=1000&auto=format&fit=crop" // Foto lifestyle (viajera)
+                                src="/images/andrea.jpg"
                                 alt="Andrea - Vito Tinto Owner"
                                 fill
                                 className="object-cover"
                             />
                             {/* Marco estilo Polaroid/Foto antigua */}
-                            <div className="absolute inset-0 border-[12px] border-white/90 pointer-events-none"></div>
+                            <div className="absolute inset-0 border-[8px] border-white/90 pointer-events-none"></div>
                         </div>
                     </div>
 

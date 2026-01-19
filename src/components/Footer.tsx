@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Logo from '@/components/Logo'
+import { MessageCircle, Mail } from "lucide-react"
 
 export default function Footer() {
     return (
@@ -15,7 +16,7 @@ export default function Footer() {
                             </span>
                         </Link>
                         <p className="text-muted-foreground max-w-sm">
-                            Tu pasaporte a la libertad. Alquilamos furgonetas camper premium para que vivas aventuras inolvidables con el máximo estilo y confort.
+                            Tu pasaporte a la libertad. Alquilamos una furgoneta camper para que vivas aventuras inolvidables con el máximo estilo y confort.
                         </p>
                     </div>
 
@@ -41,34 +42,46 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Contact */}
-                    <div className="space-y-4">
-                        <h4 className="font-bold text-foreground uppercase text-xs tracking-widest text-primary/70">Contacto</h4>
-                        <ul className="space-y-3">
-                            <li className="text-sm text-muted-foreground">
-                                <span className="block font-medium text-foreground">WhatsApp</span>
-                                +34 600 000 000
-                            </li>
-                            <li className="text-sm text-muted-foreground">
-                                <span className="block font-medium text-foreground">Email</span>
-                                hola@vitotinto.com
-                            </li>
-                        </ul>
+                    {/* Columna Contacto */}
+                    <div className="md:col-span-1 space-y-4">
+                        <h4 className="font-bold text-sm tracking-widest uppercase text-primary/80">Contacto</h4>
+                        <div className="space-y-3">
+                            <a
+                                href="https://wa.me/34692476002"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-start gap-3 group"
+                            >
+                                <div className="mt-1">
+                                    <MessageCircle className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-primary">WhatsApp</p>
+                                    <p className="text-muted-foreground group-hover:text-primary transition-colors">+34 692 476 002</p>
+                                </div>
+                            </a>
+
+                            <a
+                                href="mailto:hey@alquilercampermallorca.com"
+                                className="flex items-start gap-3 group"
+                            >
+                                <div className="mt-1">
+                                    <Mail className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-primary">Email</p>
+                                    <p className="text-muted-foreground group-hover:text-primary transition-colors">hey@alquilercampermallorca.com</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-muted-foreground">
-                        © {new Date().getFullYear()} Vito Tinto. Todos los derechos reservados.
-                    </p>
+                {/* Barra Inferior */}
+                <div className="border-t border-primary/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+                    <p>© {new Date().getFullYear()} Vito Tinto. Todos los derechos reservados.</p>
                     <div className="flex items-center gap-6">
-                        <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                            Instagram
-                        </a>
-                        <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                            Facebook
-                        </a>
-                        <Link href="/login" className="text-xs text-muted-foreground/50 hover:text-primary transition-colors">
+                        <Link href="/login" className="hover:text-primary transition-colors text-xs opacity-50 hover:opacity-100">
                             Acceso Propietario
                         </Link>
                     </div>
