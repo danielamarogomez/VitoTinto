@@ -89,6 +89,10 @@ export type Translations = {
             }
         }
     },
+    knowMallorca: {
+        title: string
+        subtitle: string
+    },
     footer: {
         desc: string
         legal: string
@@ -239,6 +243,10 @@ export const translations: Record<Language, Translations> = {
                 }
             }
         },
+        knowMallorca: {
+            title: "Conoce Mallorca",
+            subtitle: "Descubre los rincones más mágicos de la isla que nos inspiran cada día."
+        },
         footer: {
             desc: "Tu pasaporte a la libertad. Alquilamos una furgoneta camper para que vivas aventuras inolvidables con el máximo estilo y confort.",
             legal: "LEGAL",
@@ -386,6 +394,10 @@ export const translations: Record<Language, Translations> = {
                     sunset: "1 day"
                 }
             }
+        },
+        knowMallorca: {
+            title: "Get to know Mallorca",
+            subtitle: "Discover the most magical corners of the island that inspire us every day."
         },
         footer: {
             desc: "Your passport to freedom. We rent a campervan for you to live unforgettable adventures with maximum style and comfort.",

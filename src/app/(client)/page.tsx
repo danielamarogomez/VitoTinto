@@ -2,9 +2,9 @@
 
 import BookingWidget from "@/components/BookingWidget"
 import HeroTitle from "@/components/HeroTitle"
-import MallorcaRoutes from "@/components/MallorcaRoutes"
 import GallerySection from "@/components/GallerySection"
 import AboutSection from "@/components/AboutSection"
+import KnowMallorca from "@/components/KnowMallorca"
 import { useLanguage } from "@/context/LanguageContext"
 
 export default function Home() {
@@ -71,8 +71,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Rutas Recomendadas */}
-      <MallorcaRoutes />
+      {/* Conoce Mallorca */}
+      <KnowMallorca />
     </div>
   )
 }
