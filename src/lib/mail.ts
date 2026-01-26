@@ -24,7 +24,7 @@ export async function sendBookingConfirmationEmail(data: {
 
     try {
         const result = await getResendClient().emails.send({
-            from: 'Vito Tinto <onboarding@resend.dev>', // Restaurado formato original
+            from: 'Vito Tinto <hola@alquilercampermallorca.com>', // Usando el dominio verificado
             to: email,
             subject: `${t.confirmationSubject} ${startDate}`,
             html: `
@@ -105,7 +105,7 @@ export async function sendOwnerNotification(data: {
 
     try {
         await getResendClient().emails.send({
-            from: 'Vito Tinto <onboarding@resend.dev>',
+            from: 'Vito Tinto <hola@alquilercampermallorca.com>',
             to: ownerEmail,
             subject: `🔔 NUEVA RESERVA: ${customerName}`,
             html: `
@@ -145,7 +145,7 @@ export async function sendCancellationRefundEmail(data: {
 
     try {
         await getResendClient().emails.send({
-            from: 'Vito Tinto <onboarding@resend.dev>',
+            from: 'Vito Tinto <hola@alquilercampermallorca.com>',
             to: email,
             subject: `Información sobre tu reserva 🚐 - Vito Tinto`,
             html: `
@@ -219,7 +219,7 @@ export async function sendBookingRequestToOwner(data: {
 
     try {
         await getResendClient().emails.send({
-            from: 'Vito Tinto <onboarding@resend.dev>',
+            from: 'Vito Tinto <hola@alquilercampermallorca.com>',
             to: ownerEmail,
             subject: `🔔 Nueva Solicitud de Reserva - ${data.customerName}`,
             html: `
@@ -326,7 +326,7 @@ export async function sendPaymentLinkToCustomer(data: {
 
     try {
         await getResendClient().emails.send({
-            from: 'Vito Tinto <onboarding@resend.dev>',
+            from: 'Vito Tinto <hola@alquilercampermallorca.com>',
             to: data.customerEmail,
             subject: `✅ ¡Tu reserva está confirmada! - Completa el pago`,
             html: `
