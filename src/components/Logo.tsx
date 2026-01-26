@@ -3,21 +3,26 @@ import React from 'react'
 export default function Logo({ className = "h-12 w-auto" }: { className?: string }) {
     return (
         <svg
-            viewBox="0 0 120 60"
+            viewBox="0 0 100 50"
             className={className}
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.3"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
             xmlns="http://www.w3.org/2000/svg"
         >
-            {/* Silueta mínima estilo trazo artístico */}
-            <path d="M15 42 L105 42 M15 42 C12 42, 10 40, 10 37 L10 28 C10 25, 12 23, 15 22 L30 22 C35 22, 40 18, 50 18 L90 18 C100 18, 105 20, 110 25 L115 30 L115 37 C115 40, 113 42, 110 42" />
-            <circle cx="28" cy="42" r="4.5" fill="white" stroke="currentColor" />
-            <circle cx="92" cy="42" r="4.5" fill="white" stroke="currentColor" />
-            <path d="M35 23 L65 23 L65 30 L32 30 C32 26, 33 23, 35 23 Z" opacity="0.2" />
-            <path d="M70 23 L105 23 L105 30 L70 30 Z" opacity="0.2" />
+            {/* Silueta clásica Mercedes Vito */}
+            <path d="M5 38 L95 38 L95 24 C95 20, 92 18, 88 18 L35 18 C28 18, 20 20, 15 25 L5 32 Z" />
+
+            {/* Ventanas */}
+            <path d="M18 26 L32 23 L32 30 L15 30 Z" opacity="0.3" fill="currentColor" />
+            <path d="M36 21 L65 21 L65 30 L36 30 Z" opacity="0.3" fill="currentColor" />
+            <path d="M69 21 L92 21 L92 30 L69 30 Z" opacity="0.3" fill="currentColor" />
+
+            {/* Ruedas */}
+            <circle cx="22" cy="38" r="4.5" fill="white" stroke="currentColor" />
+            <circle cx="78" cy="38" r="4.5" fill="white" stroke="currentColor" />
         </svg>
     )
 }
