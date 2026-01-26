@@ -22,10 +22,10 @@ export default function HeroTitle() {
             style={{ transform: `translateY(${offset}px)` }}
         >
             <h1
-                className="font-bold tracking-wide sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-lg leading-tight"
+                className="font-bold tracking-tight text-5xl sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-lg leading-[1.1]"
                 style={{ fontFamily: 'var(--font-patrick), cursive' }}
             >
-                <div className="block">{t.hero.title}</div>
+                <div className="block md:whitespace-nowrap">{t.hero.title}</div>
                 <div className="text-secondary block mt-2">
                     {t.hero.subtitle}
                 </div>
