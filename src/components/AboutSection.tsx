@@ -32,7 +32,7 @@ export default function AboutSection() {
                         </div>
                         <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                             <a
-                                href="https://wa.me/34656615016?text=Hola%20Andrea!%20He%20le%C3%ADdo%20tu%20historia%20en%20Vito%20Tinto%20y%20me%20encantar%C3%ADa%20alquilar%20la%20camper"
+                                href="https://wa.me/34692476002?text=Hola%20Andrea!%20He%20le%C3%ADdo%20tu%20historia%20en%20Vito%20Tinto%20y%20me%20encantar%C3%ADa%20alquilar%20la%20camper"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform shadow-lg"

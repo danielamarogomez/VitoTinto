@@ -5,7 +5,7 @@ import { useState } from "react"
 
 export default function WhatsAppButton() {
     const [isOpen, setIsOpen] = useState(false)
-    const phoneNumber = "34656615016" // Formato internacional sin + ni espacios
+    const phoneNumber = "34692476002" // Formato internacional sin + ni espacios
     const defaultMessage = "Hola! Tengo una consulta sobre Vito Tinto 🚐"
 
     const handleWhatsAppClick = () => {
