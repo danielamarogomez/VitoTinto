@@ -22,18 +22,19 @@ export default async function AdminUsersPage() {
         .order('start_date', { ascending: false })
 
     // 4. Combinar datos: Auth User + Profile + Bookings
-    const processedProfiles = authUsers
+    const authUserIds = new Set(authUsers?.map(u => u.id) || [])
+    const authEmails = new Set(authUsers?.map(u => u.email?.toLowerCase()).filter(Boolean))
+
+    // Perfiles de usuarios registrados
+    const initialProfiles = authUsers
         ?.filter(user => user.email !== process.env.OWNER_EMAIL)
         ?.map(user => {
             const profile = profiles?.find(p => p.id === user.id)
-
-            // Buscar reservas por ID de usuario O por email
             const userBookings = allBookings?.filter(b =>
                 b.user_id === user.id ||
                 (b.customer_email && b.customer_email.toLowerCase() === user.email?.toLowerCase())
             ) || []
 
-            // Determinar fecha de visualización (creación de cuenta o primera reserva)
             const firstActivityDate = user.created_at
                 ? new Date(user.created_at)
                 : (userBookings.length > 0
@@ -51,6 +52,33 @@ export default async function AdminUsersPage() {
                 bookings_count: userBookings.length
             }
         }) || []
+
+    // Añadir "Huemlientes" (clientes invitados que solo están en bookings)
+    const guestCustomersMap = new Map<string, any>()
+
+    allBookings?.forEach(booking => {
+        const email = booking.customer_email?.toLowerCase()
+        if (email && !authEmails.has(email) && email !== process.env.OWNER_EMAIL?.toLowerCase()) {
+            if (!guestCustomersMap.has(email)) {
+                guestCustomersMap.set(email, {
+                    id: `guest-${email}`,
+                    full_name: booking.customer_name || 'Cliente Invitado',
+                    email: email,
+                    phone_number: booking.customer_phone || null,
+                    created_at: booking.created_at,
+                    displayEmail: email,
+                    displayDate: parseISO(booking.created_at),
+                    bookings_count: 0
+                })
+            }
+            guestCustomersMap.get(email).bookings_count += 1
+        }
+    })
+
+    const guestProfiles = Array.from(guestCustomersMap.values())
+    const processedProfiles = [...initialProfiles, ...guestProfiles].sort((a, b) =>
+        b.displayDate.getTime() - a.displayDate.getTime()
+    )
 
     return (
         <div className="animate-in fade-in duration-500">
