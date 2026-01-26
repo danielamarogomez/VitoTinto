@@ -68,6 +68,15 @@ export default function Home() {
               </p>
             </div>
           </div>
+
+          <div className="mt-16 flex justify-center">
+            <a
+              href="#reservar"
+              className="bg-primary text-white font-bold py-4 px-10 rounded-full hover:scale-105 transition-transform shadow-xl uppercase tracking-wider text-sm"
+            >
+              ¡Quiero reservar mi aventura!
+            </a>
+          </div>
         </div>
       </section>
 
