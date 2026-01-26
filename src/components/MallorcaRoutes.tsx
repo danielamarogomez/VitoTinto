@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import { MapPin, Mountain, Waves, Compass, X, Clock, ChevronRight, Info, Camera, Map as MapIcon } from "lucide-react"
 import "leaflet/dist/leaflet.css"
+import { useLanguage } from "@/context/LanguageContext"
 
 // Importación dinámica para evitar errores en el servidor (SSR)
 const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false })
@@ -11,71 +12,66 @@ const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLa
 const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false })
 const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { ssr: false })
 
-// Datos de las rutas con coordenadas reales [lat, lng]
-// Datos de las rutas con coordenadas reales [lat, lng]
-// Datos de las rutas con coordenadas reales [lat, lng] y fotos LOCALES (Gestionables por el usuario)
-const routes = [
-    {
-        id: "tramuntana",
-        title: "Sierra de Tramuntana",
-        description: "De Valldemossa a Formentor. Patrimonio de la Humanidad.",
-        longDescription: "La ruta por excelencia. Empieza tomando un café y una coca de patata en Valldemossa, piérdete por las calles de Deià y baja hasta sa Calobra para desafiar sus curvas. La Serra es el alma salvaje de Mallorca.",
-        latlng: [39.71, 2.62] as [number, number],
-        image: "/images/rutas/tramuntana/2.jpg", // Valldemossa como principal
-        type: "Montaña",
-        duration: "2-3 días",
-        icon: <Mountain className="h-5 w-5" />,
-        gallery: [
-            "/images/rutas/tramuntana/1.jpg", // Cala
-            "/images/rutas/tramuntana/2.jpg", // Valldemossa
-            "/images/rutas/tramuntana/3.jpg"  // Formentor
-        ]
-    },
-    {
-        id: "southeast",
-        title: "Calas & Turquesa",
-        description: "El Caribe mallorquín. Caló des Moro y Es Trenc.",
-        longDescription: "Baja al sur para encontrar el agua más cristalina. Desde el famoso arco de Es Pontàs hasta la arena blanca de Es Trenc. Es la zona perfecta para aparcar la furgo cerca del mar y desconectar.",
-        latlng: [39.32, 3.12] as [number, number],
-        image: "/images/rutas/calas/1.jpg", // Caló des Moro espectacular
-        type: "Playa",
-        duration: "1-2 días",
-        icon: <Waves className="h-5 w-5" />,
-        gallery: [
-            "/images/rutas/calas/1.jpg", // Caló des Moro
-            "/images/rutas/calas/2.jpg", // Es Trenc arena blanca
-            "/images/rutas/calas/3.jpg"  // Beach Club / Puesta de sol
-        ]
-    },
-    {
-        id: "volent",
-        title: "Puestas de Sol",
-        description: "Andratx y la costa oeste. Magia al atardecer.",
-        longDescription: "La costa de Ponent tiene una luz especial. Conduce hasta el Mirador de Sa Foradada para ver caer el sol sobre el mar o visita el puerto de Andratx. Carreteras tranquilas y vistas infinitas.",
-        latlng: [39.75, 2.62] as [number, number],
-        image: "/images/rutas/ponent/1.jpg", // Atardecer naranja brutal
-        type: "Relax",
-        duration: "1 día",
-        icon: <Compass className="h-5 w-5" />,
-        gallery: [
-            "/images/rutas/ponent/1.jpg", // Atardecer
-            "/images/rutas/ponent/2.jpg", // Puerto Andratx barcos
-            "/images/rutas/ponent/3.jpg"  // Costa aérea atardecer
-        ]
-    }
-]
-
-// Corrección manual de coordenadas para Ponent (estaba duplicada con Tramuntana en el copy-paste anterior si no se fija)
-routes[2].latlng = [39.69, 2.56]; // Valldemossa/Deià coast area (Sa Foradada)
-routes[0].latlng = [39.75, 2.80]; // Tramuntana central (Lluc/Escorca) para diferenciar
-
 export default function MallorcaMapRoutes() {
+    const { t } = useLanguage()
     const [selectedId, setSelectedId] = useState<string | null>(null)
     const [showFullDetails, setShowFullDetails] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
     const [L, setL] = useState<any>(null)
     // Clave única para forzar el remontaje limpio del mapa si es necesario
     const [mapKey, setMapKey] = useState("map-init")
+
+    // Definición de rutas dentro del componente para usar traducciones
+    const routes = useMemo(() => [
+        {
+            id: "tramuntana",
+            title: t.routes.items.tramuntana.title,
+            description: t.routes.items.tramuntana.desc,
+            longDescription: t.routes.items.tramuntana.longDesc,
+            latlng: [39.75, 2.80] as [number, number],
+            image: "/images/rutas/tramuntana/2.jpg", // Valldemossa como principal
+            type: "Montaña",
+            duration: t.routes.ui.duration.tramuntana,
+            icon: <Mountain className="h-5 w-5" />,
+            gallery: [
+                "/images/rutas/tramuntana/1.jpg", // Cala
+                "/images/rutas/tramuntana/2.jpg", // Valldemossa
+                "/images/rutas/tramuntana/3.jpg"  // Formentor
+            ]
+        },
+        {
+            id: "southeast",
+            title: t.routes.items.coves.title,
+            description: t.routes.items.coves.desc,
+            longDescription: t.routes.items.coves.longDesc,
+            latlng: [39.32, 3.12] as [number, number],
+            image: "/images/rutas/calas/1.jpg", // Caló des Moro espectacular
+            type: "Playa",
+            duration: t.routes.ui.duration.coves,
+            icon: <Waves className="h-5 w-5" />,
+            gallery: [
+                "/images/rutas/calas/1.jpg", // Caló des Moro
+                "/images/rutas/calas/2.jpg", // Es Trenc arena blanca
+                "/images/rutas/calas/3.jpg"  // Beach Club / Puesta de sol
+            ]
+        },
+        {
+            id: "volent",
+            title: t.routes.items.sunset.title,
+            description: t.routes.items.sunset.desc,
+            longDescription: t.routes.items.sunset.longDesc,
+            latlng: [39.69, 2.56] as [number, number],
+            image: "/images/rutas/ponent/1.jpg", // Atardecer naranja brutal
+            type: "Relax",
+            duration: t.routes.ui.duration.sunset,
+            icon: <Compass className="h-5 w-5" />,
+            gallery: [
+                "/images/rutas/ponent/1.jpg", // Atardecer
+                "/images/rutas/ponent/2.jpg", // Puerto Andratx barcos
+                "/images/rutas/ponent/3.jpg"  // Costa aérea atardecer
+            ]
+        }
+    ], [t])
 
     const selectedRoute = routes.find(r => r.id === selectedId)
 
@@ -120,12 +116,14 @@ export default function MallorcaMapRoutes() {
                 <div className="flex flex-col items-center text-center mb-16">
                     <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-4">
                         <MapIcon className="h-3 w-3" />
-                        <span>Aventuras Mallorquinas</span>
+                        <span>{t.routes.tag}</span>
                     </div>
                     <h2 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-4">
-                        Tus Rutas Tinto
+                        {t.routes.title}
                     </h2>
-
+                    <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                        {t.routes.subtitle}
+                    </p>
                 </div>
 
                 <div className="relative flex flex-col lg:flex-row gap-8 items-stretch h-[700px]">
@@ -160,7 +158,7 @@ export default function MallorcaMapRoutes() {
                                                 onClick={() => setShowFullDetails(true)}
                                                 className="text-[10px] font-bold text-primary underline"
                                             >
-                                                Ver más
+                                                {t.routes.ui.viewDetails}
                                             </button>
                                         </div>
                                     </Popup>
@@ -208,14 +206,14 @@ export default function MallorcaMapRoutes() {
                                             </div>
                                             <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
                                                 <Camera className="h-3.5 w-3.5" />
-                                                3 fotos
+                                                3 {t.routes.ui.photos}
                                             </div>
                                         </div>
                                         <button
                                             onClick={() => setShowFullDetails(true)}
                                             className="w-full flex items-center justify-center gap-2 bg-primary text-white font-black text-xs uppercase tracking-widest py-4 rounded-xl hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-primary/20"
                                         >
-                                            Ver Detalles de la Ruta
+                                            {t.routes.ui.viewDetails}
                                             <ChevronRight className="h-4 w-4" />
                                         </button>
                                     </div>
@@ -226,9 +224,9 @@ export default function MallorcaMapRoutes() {
                                 <div className="p-6 bg-primary/10 rounded-[2rem] text-primary mb-6 animate-bounce">
                                     <Compass className="h-12 w-12" />
                                 </div>
-                                <h3 className="text-2xl font-black mb-3 text-primary">Prepara la Ruta</h3>
+                                <h3 className="text-2xl font-black mb-3 text-primary">{t.routes.ui.planRoute}</h3>
                                 <p className="text-muted-foreground leading-relaxed">
-                                    Toca una de las fotos sobre el mapa real para descubrir los detalles de nuestras rutas favoritas por la isla.
+                                    {t.routes.ui.tapMap}
                                 </p>
                             </div>
                         )}
@@ -263,7 +261,7 @@ export default function MallorcaMapRoutes() {
                             </button>
                             <div className="flex items-center gap-3 text-primary mb-6">
                                 <Info className="h-6 w-6" />
-                                <span className="text-xs font-black uppercase tracking-widest">Guía de Ruta</span>
+                                <span className="text-xs font-black uppercase tracking-widest">{t.routes.ui.guide}</span>
                             </div>
                             <h2 className="text-4xl font-black text-primary tracking-tight mb-6">
                                 {selectedRoute.title}
@@ -283,7 +281,7 @@ export default function MallorcaMapRoutes() {
                             <div className="mt-auto">
                                 <button className="w-full bg-primary text-white font-black text-xs uppercase tracking-widest py-4 rounded-2xl shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
                                     <MapIcon className="h-4 w-4" />
-                                    Abrir en Google Maps
+                                    {t.routes.ui.openMaps}
                                 </button>
                             </div>
                         </div>

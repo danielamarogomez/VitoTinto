@@ -3,6 +3,7 @@ import { Patrick_Hand, Montserrat } from "next/font/google";
 import { Toaster } from 'sonner'
 import "react-day-picker/style.css";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const patrickHand = Patrick_Hand({
   weight: "400",
@@ -28,8 +29,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${patrickHand.variable} ${montserrat.variable} font-sans antialiased bg-[#FFFbf2]`}>
-        {children}
-        <Toaster position="top-center" />
+        <LanguageProvider>
+          {children}
+          <Toaster position="top-center" />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,8 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useLanguage } from "@/context/LanguageContext"
 
 export default function HeroTitle() {
+    const { t } = useLanguage()
     const [offset, setOffset] = useState(0)
 
     useEffect(() => {
@@ -20,16 +22,16 @@ export default function HeroTitle() {
             style={{ transform: `translateY(${offset}px)` }}
         >
             <h1
-                className="font-bold tracking-wide sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-lg leading-[0.9]"
+                className="font-bold tracking-wide sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-lg leading-tight"
                 style={{ fontFamily: 'var(--font-patrick), cursive' }}
             >
-                Libertad sobre ruedas <br className="hidden lg:block" />
-                <span className="text-secondary block mt-2">
-                    Con Vito Tinto
-                </span>
+                <div className="block">{t.hero.title}</div>
+                <div className="text-secondary block mt-2">
+                    {t.hero.subtitle}
+                </div>
             </h1>
             <p className="mx-auto lg:mx-0 max-w-[700px] text-lg sm:text-xl text-gray-200 drop-shadow">
-                Escápate de la rutina con nuestra camper. Equipada con todo lo necesario para tu aventura, con el toque de elegancia que mereces.
+                {t.hero.description}
             </p>
         </div>
     )

@@ -1,8 +1,11 @@
 "use client"
 
 import Image from "next/image"
+import { useLanguage } from "@/context/LanguageContext"
 
 export default function AboutSection() {
+    const { t } = useLanguage()
+
     return (
         <section id="sobre-mi" className="py-20 bg-[#f4e4bc]/30"> {/* Un tono arena un pelín más oscuro para contrastar */}
             <div className="container mx-auto px-4 md:px-6 max-w-screen-xl">
@@ -14,21 +17,17 @@ export default function AboutSection() {
                             className="text-4xl lg:text-5xl font-bold text-primary mb-6"
                             style={{ fontFamily: 'var(--font-patrick), cursive' }}
                         >
-                            Hola, soy Andrea
+                            {t.about.title}
                         </h2>
                         <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                             <p>
-                                Soy una apasionada de la naturaleza y de la libertad que te da viajar sin rumbo fijo.
-                                Vito Tinto nació de mi deseo de compartir esa sensación única de despertar frente al mar
-                                y vivir Mallorca de una forma diferente.
+                                {t.about.p1}
                             </p>
                             <p>
-                                He cuidado cada detalle de esta camper para que no sea solo un vehículo, sino tu pequeño hogar
-                                sobre ruedas. Desde los acabados en madera hasta los rincones más acogedores, todo está pensado
-                                para que vivas una experiencia inolvidable.
+                                {t.about.p2}
                             </p>
                             <p className="font-medium text-primary/80 pt-2">
-                                ¡Espero que la disfrutes tanto como yo!
+                                {t.about.p3}
                             </p>
                         </div>
                     </div>

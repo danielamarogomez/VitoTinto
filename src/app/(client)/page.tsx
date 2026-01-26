@@ -1,10 +1,14 @@
+"use client"
+
 import BookingWidget from "@/components/BookingWidget"
 import HeroTitle from "@/components/HeroTitle"
 import MallorcaRoutes from "@/components/MallorcaRoutes"
 import GallerySection from "@/components/GallerySection"
 import AboutSection from "@/components/AboutSection"
+import { useLanguage } from "@/context/LanguageContext"
 
 export default function Home() {
+  const { t } = useLanguage()
   return (
     <div className="flex flex-col min-h-screen">
 
@@ -36,31 +40,31 @@ export default function Home() {
             className="text-3xl font-bold text-primary mb-12"
             style={{ fontFamily: 'var(--font-patrick), cursive' }}
           >
-            ¿Por qué elegir Vito Tinto?
+            {t.features.title}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex flex-col items-center gap-4 p-6 border border-border/60 rounded-xl bg-[#FFFBF2] hover:shadow-lg transition-all hover:-translate-y-1">
               <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">🚐</div>
-              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>Totalmente Equipada</h3>
+              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>{t.features.f1.title}</h3>
               <p className="text-muted-foreground">
-                Cocina, cama doble y todo el menaje necesario. Solo trae tu maleta.
+                {t.features.f1.desc}
               </p>
             </div>
 
             <div className="flex flex-col items-center gap-4 p-6 border border-border/60 rounded-xl bg-[#FFFBF2] hover:shadow-lg transition-all hover:-translate-y-1">
-              <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">🍷</div>
-              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>Experiencia Premium</h3>
+              <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">🏝️</div>
+              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>{t.features.f2.title}</h3>
               <p className="text-muted-foreground">
-                Detalles cuidados y un diseño acogedor que te hará sentir como en casa.
+                {t.features.f2.desc}
               </p>
             </div>
 
             <div className="flex flex-col items-center gap-4 p-6 border border-border/60 rounded-xl bg-[#FFFBF2] hover:shadow-lg transition-all hover:-translate-y-1">
-              <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">🗺️</div>
-              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>Kilometraje Flexible</h3>
+              <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">✨</div>
+              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>{t.features.f3.title}</h3>
               <p className="text-muted-foreground">
-                Opciones adaptadas a tu viaje, ya sea una escapada cercana o un gran roadtrip.
+                {t.features.f3.desc}
               </p>
             </div>
           </div>

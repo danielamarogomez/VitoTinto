@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createClient, createAdminClient } from "@/lib/supabase/server"
 import { sendBookingRequestToOwner } from "@/lib/mail"
 
 interface BookingRequestData {
@@ -12,17 +12,20 @@ interface BookingRequestData {
     customerPhone: string
     customerMessage?: string
     extras?: { id: string; name: string; price: number }[]
+    preferredLanguage?: 'es' | 'en'
 }
 
 export async function createBookingRequest(data: BookingRequestData) {
-    const supabase = await createClient()
+    const authSupabase = await createClient()
+    const adminSupabase = await createAdminClient()
 
-    // Verificar si el usuario está autenticado (opcional, pero recomendado)
-    const { data: { user } } = await supabase.auth.getUser()
+    // Verificar si el usuario está autenticado para vincular la reserva
+    const { data: { user } } = await authSupabase.auth.getUser()
 
     try {
         // Crear la solicitud de reserva con estado "pending_approval"
-        const { data: booking, error } = await supabase
+        // Usamos adminSupabase para saltar RLS (ya que los guest no pueden insertar)
+        const { data: booking, error } = await adminSupabase
             .from('bookings')
             .insert({
                 start_date: data.startDate,
@@ -33,15 +36,16 @@ export async function createBookingRequest(data: BookingRequestData) {
                 customer_phone: data.customerPhone,
                 customer_message: data.customerMessage || '',
                 status: 'pending_approval', // Esperando aprobación de Andrea
-                user_id: null, // Forzamos null para evitar errores de FK/Perfil. Tratamos como invitado.
-                selected_extras: data.extras || [] // Guardamos los extras en la DB
+                user_id: user?.id || null, // Vinculamos si está logueado, sino null
+                selected_extras: data.extras || [], // Guardamos los extras en la DB
+                // preferred_language: data.preferredLanguage || 'es' // TODO: Descomentar cuando se ejecute la migración en DB
             })
             .select()
             .single()
 
         if (error) {
             console.error('Error creating booking request:', error)
-            throw new Error('No se pudo crear la solicitud de reserva')
+            throw new Error(`Error Supabase: ${error.message} (Code: ${error.code})`)
         }
 
         // Enviar email a Andrea notificándole de la nueva solicitud

@@ -138,7 +138,8 @@ export async function POST(req: Request) {
                         startDate: start_date,
                         endDate: end_date,
                         totalPrice: totalPrice.toString(),
-                        bookingId: booking.id
+                        bookingId: booking.id,
+                        language: booking.preferred_language // Pasamos el idioma preferido
                     }).catch(e => console.error('❌ [WEBHOOK] Error email cliente:', e)),
                     sendOwnerNotification({
                         customerName,

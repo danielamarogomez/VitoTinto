@@ -1,6 +1,12 @@
 import { Resend } from 'resend'
+import { translations, Language } from '@/lib/translations'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResendClient = () => {
+    if (!process.env.RESEND_API_KEY) {
+        throw new Error('RESEND_API_KEY is missing')
+    }
+    return new Resend(process.env.RESEND_API_KEY)
+}
 
 export async function sendBookingConfirmationEmail(data: {
     email: string,
@@ -8,45 +14,47 @@ export async function sendBookingConfirmationEmail(data: {
     startDate: string,
     endDate: string,
     totalPrice: string,
-    bookingId: string
+    bookingId: string,
+    language?: Language
 }) {
-    const { email, customerName, startDate, endDate, totalPrice, bookingId } = data
+    const { email, customerName, startDate, endDate, totalPrice, bookingId, language = 'es' } = data
+    const t = translations[language].email
 
-    console.log(`📧 Intentando enviar email de confirmación a: ${email}`)
+    console.log(`📧 Intentando enviar email de confirmación a: ${email} (Idioma: ${language})`)
 
     try {
-        const result = await resend.emails.send({
+        const result = await getResendClient().emails.send({
             from: 'Vito Tinto <onboarding@resend.dev>', // Restaurado formato original
             to: email,
-            subject: `¡Reserva Confirmada! 🚐 - Tu aventura comienza el ${startDate}`,
+            subject: `${t.confirmationSubject} ${startDate}`,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
                     <div style="background-color: #722f37; padding: 40px 20px; text-align: center; color: white;">
-                        <h1 style="margin: 0; font-size: 28px;">¡Tu aventura está lista!</h1>
-                        <p style="opacity: 0.9;">Prepárate para vivir la libertad sobre ruedas.</p>
+                        <h1 style="margin: 0; font-size: 28px;">${t.confirmationTitle}</h1>
+                        <p style="opacity: 0.9;">${t.cheers}</p>
                     </div>
                     
                     <div style="padding: 30px;">
                         <h2 style="color: #722f37;">Hola ${customerName},</h2>
-                        <p>Tu pago ha sido procesado correctamente y tu reserva para la furgoneta <strong>Vito Tinto</strong> está oficialmente confirmada.</p>
+                        <p>${t.confirmationIntro}</p>
                         
                         <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">Detalles de la Reserva:</h3>
+                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">${t.detailsTitle}:</h3>
                             <table style="width: 100%; font-size: 14px;">
                                 <tr>
-                                    <td style="padding: 5px 0; color: #666;">Fecha de Inicio:</td>
+                                    <td style="padding: 5px 0; color: #666;">${t.checkIn}:</td>
                                     <td style="padding: 5px 0; font-weight: bold; text-align: right;">${startDate}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 5px 0; color: #666;">Fecha de Fin:</td>
+                                    <td style="padding: 5px 0; color: #666;">${t.checkOut}:</td>
                                     <td style="padding: 5px 0; font-weight: bold; text-align: right;">${endDate}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 5px 0; color: #666;">Total Pagado:</td>
+                                    <td style="padding: 5px 0; color: #666;">${t.totalPrice}:</td>
                                     <td style="padding: 5px 0; font-weight: bold; text-align: right; color: #722f37; font-size: 18px;">${totalPrice}€</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 5px 0; color: #666;">ID de Reserva:</td>
+                                    <td style="padding: 5px 0; color: #666;">ID:</td>
                                     <td style="padding: 5px 0; font-weight: bold; text-align: right; color: #999;">#${bookingId.slice(0, 8)}</td>
                                 </tr>
                             </table>
@@ -58,16 +66,17 @@ export async function sendBookingConfirmationEmail(data: {
                                  style="width: 100%; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
                         </div>
 
-                        <h3 style="color: #333;">Próximos pasos:</h3>
-                        <ul style="color: #444; line-height: 1.6;">
-                            <li>Nos pondremos en contacto contigo por teléfono/WhatsApp para concretar la hora de entrega.</li>
-                            <li>Asegúrate de traer tu carnet de conducir en vigor el día de la recogida.</li>
-                            <li>¡Empieza a planear tu ruta!</li>
-                        </ul>
+                        <h3 style="color: #333;">${t.locationTitle}:</h3>
+                        <p style="color: #444;">${t.locationDesc}</p>
+
+                        <h4 style="color: #333; margin-top: 20px;">${t.tipsTitle}:</h4>
+                        <p style="color: #444;">${t.tipsDesc}</p>
+                        
+                         <h4 style="color: #333; margin-top: 20px;">${t.questions}:</h4>
+                        <p style="color: #444;">${t.questionsDesc}</p>
 
                         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
-                            <p style="color: #999; font-size: 12px;">Vito Tinto - Libertad sobre ruedas</p>
-                            <p style="color: #999; font-size: 12px;">Esta es una confirmación automática de tu reserva.</p>
+                            <p style="color: #999; font-size: 12px;">Vito Tinto - ${t.cheers}</p>
                         </div>
                     </div>
                 </div>
@@ -95,7 +104,7 @@ export async function sendOwnerNotification(data: {
     }
 
     try {
-        await resend.emails.send({
+        await getResendClient().emails.send({
             from: 'Vito Tinto <onboarding@resend.dev>',
             to: ownerEmail,
             subject: `🔔 NUEVA RESERVA: ${customerName}`,
@@ -135,7 +144,7 @@ export async function sendCancellationRefundEmail(data: {
     const { email, customerName, startDate, endDate, refundAmount } = data
 
     try {
-        await resend.emails.send({
+        await getResendClient().emails.send({
             from: 'Vito Tinto <onboarding@resend.dev>',
             to: email,
             subject: `Información sobre tu reserva 🚐 - Vito Tinto`,
@@ -209,7 +218,7 @@ export async function sendBookingRequestToOwner(data: {
     console.log(`📧 Enviando notificación de nueva solicitud a: ${ownerEmail}`)
 
     try {
-        await resend.emails.send({
+        await getResendClient().emails.send({
             from: 'Vito Tinto <onboarding@resend.dev>',
             to: ownerEmail,
             subject: `🔔 Nueva Solicitud de Reserva - ${data.customerName}`,
@@ -316,7 +325,7 @@ export async function sendPaymentLinkToCustomer(data: {
     console.log(`📧 Enviando link de pago a: ${data.customerEmail}`)
 
     try {
-        await resend.emails.send({
+        await getResendClient().emails.send({
             from: 'Vito Tinto <onboarding@resend.dev>',
             to: data.customerEmail,
             subject: `✅ ¡Tu reserva está confirmada! - Completa el pago`,

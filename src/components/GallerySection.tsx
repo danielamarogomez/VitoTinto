@@ -3,23 +3,25 @@
 import { useState, useRef } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
-const GALLERY_IMAGES = [
-    { src: "/images/vito/v6.jpg", alt: "Cena bajo las estrellas" },
-    { src: "/images/vito/v1.jpg", alt: "Vito Tinto en el Faro" },
-    { src: "/images/vito/v7.jpg", alt: "Fachada con encanto" },
-    { src: "/images/vito/v2.jpg", alt: "Interior cálido" },
-    { src: "/images/vito/v8.jpg", alt: "Café en la carretera" },
-    { src: "/images/vito/v3.jpg", alt: "Vistas infinitas" },
-    { src: "/images/vito/v9.jpg", alt: "Noches de lectura" },
-    { src: "/images/vito/v4.jpg", alt: "Cama confortable" },
-    { src: "/images/vito/v10.jpg", alt: "Desayuno Mediterráneo" },
-    { src: "/images/vito/v5.jpg", alt: "Cocina equipada" }
-]
+import { useLanguage } from "@/context/LanguageContext"
 
 export default function GallerySection() {
+    const { t } = useLanguage()
     const scrollRef = useRef<HTMLDivElement>(null)
     const [activeIndex, setActiveIndex] = useState(0)
+
+    const GALLERY_IMAGES = [
+        { src: "/images/vito/v6.jpg", key: "Cena bajo las estrellas" },
+        { src: "/images/vito/v1.jpg", key: "Vito Tinto en el Faro" },
+        { src: "/images/vito/v7.jpg", key: "Fachada con encanto" },
+        { src: "/images/vito/v2.jpg", key: "Interior cálido" },
+        { src: "/images/vito/v8.jpg", key: "Café en la carretera" },
+        { src: "/images/vito/v3.jpg", key: "Vistas infinitas" },
+        { src: "/images/vito/v9.jpg", key: "Noches de lectura" },
+        { src: "/images/vito/v4.jpg", key: "Cama confortable" },
+        { src: "/images/vito/v10.jpg", key: "Desayuno Mediterráneo" },
+        { src: "/images/vito/v5.jpg", key: "Cocina equipada" }
+    ]
 
     const scrollToIndex = (index: number) => {
         if (!scrollRef.current) return
@@ -57,10 +59,10 @@ export default function GallerySection() {
                         className="text-4xl lg:text-5xl font-bold text-primary mb-4"
                         style={{ fontFamily: 'var(--font-patrick), cursive' }}
                     >
-                        Nuestra Vito Tinto
+                        {t.gallery.title}
                     </h2>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Desliza para ver cada rincón de tu próximo hogar sobre ruedas.
+                        {t.gallery.subtitle}
                     </p>
                 </div>
 
@@ -86,25 +88,28 @@ export default function GallerySection() {
                         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 pb-4 px-4"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
-                        {GALLERY_IMAGES.map((img, idx) => (
-                            <div
-                                key={idx}
-                                className="flex-none w-full md:w-[700px] aspect-[4/3] md:aspect-[3/2] snap-center relative rounded-[2rem] overflow-hidden shadow-xl border border-primary/5 bg-muted"
-                            >
-                                <Image
-                                    src={img.src}
-                                    alt={img.alt}
-                                    fill
-                                    className="object-cover"
-                                    priority={idx === 0}
-                                />
-                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-                                    <p className="text-white text-lg font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>
-                                        {img.alt}
-                                    </p>
+                        {GALLERY_IMAGES.map((img, idx) => {
+                            const altText = t.gallery.images[img.key] || img.key
+                            return (
+                                <div
+                                    key={idx}
+                                    className="flex-none w-full md:w-[700px] aspect-[4/3] md:aspect-[3/2] snap-center relative rounded-[2rem] overflow-hidden shadow-xl border border-primary/5 bg-muted"
+                                >
+                                    <Image
+                                        src={img.src}
+                                        alt={altText}
+                                        fill
+                                        className="object-cover"
+                                        priority={idx === 0}
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+                                        <p className="text-white text-lg font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>
+                                            {altText}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
 
                     {/* Indicadores (Dots) */}
