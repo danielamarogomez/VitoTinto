@@ -13,7 +13,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
 
       {/* Hero Section */}
-      <section id="reservar" className="relative w-full py-20 md:py-32 lg:py-48 bg-[url('/hero-new.jpg')] bg-cover bg-center overflow-hidden">
+      <section id="reservar" className="relative w-full py-20 md:py-32 lg:py-48 bg-[url('/hero-final.png')] bg-cover bg-center overflow-hidden">
         <div className="absolute inset-0 bg-black/40" />
         <div className="container relative mx-auto px-4 md:px-6 max-w-screen-xl">
           <div className="flex flex-col gap-12 lg:flex-row items-start lg:gap-16 lg:-mt-10">
