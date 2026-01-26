@@ -20,11 +20,10 @@ export default function BookingWidget() {
 
     // Definir los extras dinámicamente según el idioma
     const EXTRA_SERVICES = [
-        { id: 'baby_seat', name: t.booking.extras.babySeat, price: 30 },
-        { id: 'paddle_surf', name: t.booking.extras.paddleSurf, price: 50 },
-        { id: 'surf_kit', name: t.booking.extras.surfKit, price: 40 },
-        { id: 'bedding', name: t.booking.extras.bedding, price: 15 },
-        { id: 'shower', name: t.booking.extras.shower, price: 10 },
+        { id: 'baby_seat', name: t.booking.extras.babySeat, price: 10, perDay: true },
+        { id: 'snorkel_pack', name: t.booking.extras.snorkelPack, price: 5, perDay: true },
+        { id: 'paddle_surf_pro', name: t.booking.extras.paddleSurfPro, price: 50, perDay: true },
+        { id: 'personalized_guide', name: t.booking.extras.personalizedGuide, price: 50, perDay: false },
     ]
 
     // Locale dinámico
@@ -75,9 +74,14 @@ export default function BookingWidget() {
     }
 
     const calculateExtrasPrice = () => {
+        if (!date?.from || !date?.to) return 0
+        const days = eachDayOfInterval({ start: date.from, end: addDays(date.to, -1) }).length
+
         return selectedExtras.reduce((acc, extraId) => {
             const extra = EXTRA_SERVICES.find(e => e.id === extraId)
-            return acc + (extra?.price || 0)
+            if (!extra) return acc
+            const price = extra.perDay ? extra.price * days : extra.price
+            return acc + price
         }, 0)
     }
 
@@ -121,7 +125,16 @@ export default function BookingWidget() {
         setLoading(true)
         try {
             const totalPrice = calculateTotal(date.from, date.to)
-            const extrasData = selectedExtras.map(id => EXTRA_SERVICES.find(e => e.id === id)).filter(Boolean) as { id: string; name: string; price: number }[]
+            const days = eachDayOfInterval({ start: date.from, end: addDays(date.to, -1) }).length
+            const extrasData = selectedExtras.map(id => {
+                const extra = EXTRA_SERVICES.find(e => e.id === id)
+                if (!extra) return null
+                return {
+                    id: extra.id,
+                    name: extra.name,
+                    price: extra.perDay ? extra.price * days : extra.price
+                }
+            }).filter(Boolean) as { id: string; name: string; price: number }[]
 
             await createBookingRequest({
                 startDate: format(date.from, 'yyyy-MM-dd'),

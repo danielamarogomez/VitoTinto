@@ -49,10 +49,9 @@ export type Translations = {
         requiredFieldsDesc: string
         extras: {
             babySeat: string
-            paddleSurf: string
-            surfKit: string,
-            bedding: string
-            shower: string
+            snorkelPack: string
+            paddleSurfPro: string
+            personalizedGuide: string
         }
     }
     gallery: {
@@ -179,11 +178,10 @@ export const translations: Record<Language, Translations> = {
             requiredFields: "Campos Requeridos",
             requiredFieldsDesc: "Por favor, completa todos los campos obligatorios.",
             extras: {
-                babySeat: "Silla de Bebé",
-                paddleSurf: "Paddle Surf",
-                surfKit: "Kit de Surf",
-                bedding: "Ropa de Cama",
-                shower: "Ducha Exterior"
+                babySeat: "Sillita de bebé (+10€/día)",
+                snorkelPack: "Pack Snorkel (+5€/día)",
+                paddleSurfPro: "Paddle Surf Pro (+50€/día)",
+                personalizedGuide: "Ruta y Guía personalizada (+50€)"
             }
         },
         gallery: {
@@ -331,11 +329,10 @@ export const translations: Record<Language, Translations> = {
             requiredFields: "Required Fields",
             requiredFieldsDesc: "Please fill in all required fields.",
             extras: {
-                babySeat: "Baby Seat",
-                paddleSurf: "Paddle Surf",
-                surfKit: "Surf Kit",
-                bedding: "Bedding",
-                shower: "Outdoor Shower"
+                babySeat: "Baby Seat (+10€/day)",
+                snorkelPack: "Snorkel Pack (+5€/day)",
+                paddleSurfPro: "Paddle Surf Pro (+50€/day)",
+                personalizedGuide: "Personalized Route & Guide (+50€)"
             }
         },
         gallery: {
