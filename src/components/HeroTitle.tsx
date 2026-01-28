@@ -29,6 +29,11 @@ export default function HeroTitle() {
                 <div className="text-secondary block mt-2">
                     {t.hero.subtitle}
                 </div>
+                <div className="flex justify-center lg:justify-start mt-4">
+                    <span className="bg-white/20 backdrop-blur-md text-white text-sm font-bold px-4 py-1 rounded-full border border-white/30 flex items-center gap-2">
+                        <span>👥</span> {t.features.f4.desc}
+                    </span>
+                </div>
             </h1>
             <p className="mx-auto lg:mx-0 max-w-[700px] text-lg sm:text-xl text-gray-200 drop-shadow">
                 {t.hero.description}
