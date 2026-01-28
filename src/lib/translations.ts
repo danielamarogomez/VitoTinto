@@ -37,6 +37,7 @@ export type Translations = {
         emailPlaceholder: string
         phone: string
         phonePlaceholder: string
+        guests: string
         message: string
         messagePlaceholder: string
         back: string
@@ -171,6 +172,7 @@ export const translations: Record<Language, Translations> = {
             emailPlaceholder: "tu@email.com",
             phone: "Teléfono *",
             phonePlaceholder: "+34 600 000 000",
+            guests: "Número de personas *",
             message: "Mensaje (opcional)",
             messagePlaceholder: "¿Alguna pregunta o petición especial?",
             back: "Volver",
@@ -326,6 +328,7 @@ export const translations: Record<Language, Translations> = {
             emailPlaceholder: "you@email.com",
             phone: "Phone *",
             phonePlaceholder: "+34 600 000 000",
+            guests: "Number of guests *",
             message: "Message (optional)",
             messagePlaceholder: "Any questions or special requests?",
             back: "Back",

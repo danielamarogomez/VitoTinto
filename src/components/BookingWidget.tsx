@@ -34,6 +34,7 @@ export default function BookingWidget() {
         name: '',
         email: '',
         phone: '',
+        guests: '2',
         message: ''
     })
 
@@ -143,6 +144,7 @@ export default function BookingWidget() {
                 customerName: formData.name,
                 customerEmail: formData.email,
                 customerPhone: formData.phone,
+                guests: formData.guests,
                 customerMessage: formData.message,
                 extras: extrasData,
                 preferredLanguage: language // Enviamos el idioma seleccionado
@@ -154,7 +156,7 @@ export default function BookingWidget() {
 
             // Resetear formulario
             setDate(undefined)
-            setFormData({ name: '', email: '', phone: '', message: '' })
+            setFormData({ name: '', email: '', phone: '', guests: '2', message: '' })
             setSelectedExtras([])
             setShowForm(false)
         } catch (error: any) {
@@ -319,6 +321,21 @@ export default function BookingWidget() {
                                 className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                                 placeholder={t.booking.phonePlaceholder}
                             />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium mb-1">{t.booking.guests}</label>
+                            <select
+                                required
+                                value={formData.guests}
+                                onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background"
+                            >
+                                <option value="2">2 {language === 'es' ? 'Personas' : 'People'}</option>
+                                <option value="1">1 {language === 'es' ? 'Persona' : 'Person'}</option>
+                                <option value="2+baby">2 + {language === 'es' ? 'Bebé' : 'Baby'}</option>
+                                <option value="1+baby">1 + {language === 'es' ? 'Bebé' : 'Baby'}</option>
+                            </select>
                         </div>
 
                         <div>

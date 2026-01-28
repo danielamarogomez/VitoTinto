@@ -197,6 +197,7 @@ export async function sendBookingRequestToOwner(data: {
     customerEmail: string
     customerPhone: string
     customerMessage: string
+    guests: string
     startDate: string
     endDate: string
     totalPrice: number
@@ -249,6 +250,10 @@ export async function sendBookingRequestToOwner(data: {
                                     <td style="padding: 8px 0; font-weight: bold; text-align: right;">
                                         <a href="tel:${data.customerPhone}" style="color: #722f37;">${data.customerPhone}</a>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #666;">Personas:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.guests}</td>
                                 </tr>
                             </table>
                         </div>

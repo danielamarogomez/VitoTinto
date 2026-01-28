@@ -10,6 +10,7 @@ interface BookingRequestData {
     customerName: string
     customerEmail: string
     customerPhone: string
+    guests: string
     customerMessage?: string
     extras?: { id: string; name: string; price: number }[]
     preferredLanguage?: 'es' | 'en'
@@ -34,7 +35,7 @@ export async function createBookingRequest(data: BookingRequestData) {
                 customer_name: data.customerName,
                 customer_email: data.customerEmail,
                 customer_phone: data.customerPhone,
-                customer_message: data.customerMessage || '',
+                customer_message: `Personas: ${data.guests}${data.customerMessage ? '\n\nMensaje: ' + data.customerMessage : ''}`,
                 status: 'pending_approval', // Esperando aprobación de Andrea
                 user_id: user?.id || null, // Vinculamos si está logueado, sino null
                 selected_extras: data.extras || [], // Guardamos los extras en la DB
@@ -59,6 +60,7 @@ export async function createBookingRequest(data: BookingRequestData) {
                 startDate: data.startDate,
                 endDate: data.endDate,
                 totalPrice: data.totalPrice,
+                guests: data.guests,
                 extras: data.extras
             })
         } catch (emailError) {
