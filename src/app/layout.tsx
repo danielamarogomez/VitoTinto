@@ -19,6 +19,11 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Vito Tinto - Camper Experience",
   description: "Alquila tu furgoneta camperizada premium.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

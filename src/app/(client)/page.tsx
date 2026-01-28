@@ -43,12 +43,20 @@ export default function Home() {
             {t.features.title}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="flex flex-col items-center gap-4 p-6 border border-border/60 rounded-xl bg-[#FFFBF2] hover:shadow-lg transition-all hover:-translate-y-1">
               <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">🚐</div>
               <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>{t.features.f1.title}</h3>
               <p className="text-muted-foreground">
                 {t.features.f1.desc}
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center gap-4 p-6 border border-border/60 rounded-xl bg-[#FFFBF2] hover:shadow-lg transition-all hover:-translate-y-1">
+              <div className="p-4 bg-primary/10 rounded-full text-primary text-4xl">👥</div>
+              <h3 className="text-xl font-bold font-hand" style={{ fontFamily: 'var(--font-patrick)' }}>{t.features.f4.title}</h3>
+              <p className="text-muted-foreground">
+                {t.features.f4.desc}
               </p>
             </div>
 

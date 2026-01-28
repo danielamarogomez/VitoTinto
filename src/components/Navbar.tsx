@@ -11,7 +11,7 @@ export default function Navbar() {
         <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
             <div className="container flex h-20 items-center mx-auto px-4 max-w-screen-xl justify-between">
                 <Link href="/" className="mr-6 flex items-center space-x-3">
-                    <Logo className="h-14 w-auto" />
+                    <Logo className="h-14 w-14" />
                     <span
                         className="font-bold text-3xl text-primary mt-1"
                         style={{ fontFamily: 'var(--font-patrick), cursive' }}

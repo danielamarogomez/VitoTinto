@@ -17,6 +17,7 @@ export type Translations = {
         f1: { title: string, desc: string }
         f2: { title: string, desc: string }
         f3: { title: string, desc: string }
+        f4: { title: string, desc: string }
     }
     booking: {
         title: string
@@ -146,6 +147,10 @@ export const translations: Record<Language, Translations> = {
             f3: {
                 title: "Extras",
                 desc: "Servicios complementarios que adaptamos según tus necesidades."
+            },
+            f4: {
+                title: "Capacidad",
+                desc: "Ideal para 2 personas + 1 bebé. Contamos con sillita opcional."
             }
         },
         booking: {
@@ -297,6 +302,10 @@ export const translations: Record<Language, Translations> = {
             f3: {
                 title: "Extras",
                 desc: "Complementary services that we adapt according to your needs."
+            },
+            f4: {
+                title: "Capacity",
+                desc: "Ideal for 2 people + 1 baby. Optional baby seat available."
             }
         },
         booking: {
