@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import "react-day-picker/style.css";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const patrickHand = Patrick_Hand({
   weight: "400",
@@ -38,6 +39,7 @@ export default function RootLayout({
           {children}
           <Toaster position="top-center" />
         </LanguageProvider>
+        <GoogleAnalytics gaId="G-ZTZ7N2DNSC" />
       </body>
     </html>
   );
