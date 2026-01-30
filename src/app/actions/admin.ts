@@ -69,7 +69,7 @@ export async function deleteBooking(id: string) {
     // 2. Obtener datos de la reserva para el reembolso
     const { data: booking } = await supabaseAdmin
         .from('bookings')
-        .select('payment_intent_id, total_price, customer_name, customer_email, start_date, end_date')
+        .select('payment_intent_id, total_price, customer_name, customer_email, start_date, end_date, preferred_language')
         .eq('id', id)
         .single()
 
@@ -88,7 +88,8 @@ export async function deleteBooking(id: string) {
                 customerName: booking.customer_name,
                 startDate: booking.start_date,
                 endDate: booking.end_date,
-                refundAmount: booking.total_price.toString()
+                refundAmount: booking.total_price.toString(),
+                language: (booking as any).preferred_language || 'es'
             })
             console.log('Email de cancelación enviado correctamente')
         } catch (error: any) {

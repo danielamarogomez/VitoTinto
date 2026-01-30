@@ -124,6 +124,7 @@ export default function BookingWidget() {
         }
 
         setLoading(true)
+        console.log('🏁 Submitting form with language:', language)
         try {
             const totalPrice = calculateTotal(date.from, date.to)
             const days = eachDayOfInterval({ start: date.from, end: addDays(date.to, -1) }).length
@@ -136,6 +137,8 @@ export default function BookingWidget() {
                     price: extra.perDay ? extra.price * days : extra.price
                 }
             }).filter(Boolean) as { id: string; name: string; price: number }[]
+
+            console.log('Sending booking request with language:', language)
 
             await createBookingRequest({
                 startDate: format(date.from, 'yyyy-MM-dd'),

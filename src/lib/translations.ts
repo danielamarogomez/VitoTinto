@@ -104,7 +104,7 @@ export type Translations = {
         rights: string
         ownerAccess: string
     },
-    email: { // New section for emails
+    email: {
         confirmationSubject: string
         confirmationTitle: string
         confirmationIntro: string
@@ -119,6 +119,31 @@ export type Translations = {
         questions: string
         questionsDesc: string
         cheers: string
+        // New translations for payment link
+        paymentSubject: string
+        paymentTitle: string
+        paymentSubtitle: string
+        paymentIntro: string
+        paymentDetailsTitle: string
+        vatIncluded: string
+        paymentNextStepTitle: string
+        paymentNextStepDesc: string
+        payNow: string
+        paymentWarningTitle: string
+        paymentWarningDesc: string
+        paymentPostInfo: string
+        paymentDoubts: string
+        paymentFooter: string
+        // New translations for cancellation
+        refundSubject: string
+        refundTitle: string
+        refundIntro: string
+        refundDetailsTitle: string
+        refundProcessed: string
+        periodCancelled: string
+        refundAmount: string
+        refundBankInfo: string
+        refundSorry: string
     }
 }
 
@@ -276,7 +301,32 @@ export const translations: Record<Language, Translations> = {
             tipsDesc: "Toalla de playa, bañador, protector solar y muchas ganas de disfrutar. ¡La furgo tiene sábanas, toallas de ducha y cocina equipada!",
             questions: "¿Dudas?",
             questionsDesc: "Escríbeme por WhatsApp si necesitas recomendaciones de rutas o tienes alguna pregunta.",
-            cheers: "¡Nos vemos pronto en la carretera!"
+            cheers: "¡Nos vemos pronto en la carretera!",
+
+            paymentSubject: "✅ ¡Tu reserva está confirmada! - Completa el pago",
+            paymentTitle: "✅ ¡Buenas noticias!",
+            paymentSubtitle: "Tu reserva ha sido aprobada",
+            paymentIntro: "¡Genial! Hemos revisado tu solicitud y <strong>confirmamos la disponibilidad</strong> de Vito Tinto para las fechas que solicitaste.",
+            paymentDetailsTitle: "📅 Detalles de tu Reserva:",
+            vatIncluded: "* IVA incluido",
+            paymentNextStepTitle: "💳 Siguiente paso: Completar el pago",
+            paymentNextStepDesc: "Para asegurar tu reserva, completa el pago de forma segura a través de Stripe haciendo clic en el botón de abajo.",
+            payNow: "💳 Pagar Ahora",
+            paymentWarningTitle: "⏰ Importante:",
+            paymentWarningDesc: "Este link de pago es válido durante 24 horas. Si no completas el pago en ese tiempo, la reserva quedará liberada para otros clientes.",
+            paymentPostInfo: "Una vez completado el pago, recibirás inmediatamente un email de confirmación con todos los detalles para recoger la furgoneta.",
+            paymentDoubts: "¿Tienes alguna duda? No dudes en contactarnos respondiendo a este email o por WhatsApp.",
+            paymentFooter: "Vito Tinto - Libertad sobre ruedas",
+
+            refundSubject: "Información sobre tu reserva 🚐 - Vito Tinto",
+            refundTitle: "Reserva Cancelada y Reembolso",
+            refundIntro: "Te informamos de que tu reserva para la furgoneta <strong>Vito Tinto</strong> ha sido cancelada.",
+            refundDetailsTitle: "Detalles del Reembolso:",
+            refundProcessed: "Hemos procesado una devolución total de tu pago a través de Stripe.",
+            periodCancelled: "Periodo cancelado:",
+            refundAmount: "Importe Reembolsado:",
+            refundBankInfo: "* El dinero suele tardar entre 5 y 10 días laborables en aparecer en tu cuenta bancaria, dependiendo de tu entidad financiera.",
+            refundSorry: "Sentimos los inconvenientes que esto te pueda causar. Esperamos verte pronto en otra ocasión."
         }
     },
     en: {
@@ -432,7 +482,32 @@ export const translations: Record<Language, Translations> = {
             tipsDesc: "Beach towel, swimsuit, sunscreen and lots of desire to enjoy. The van has sheets, shower towels and an equipped kitchen!",
             questions: "Questions?",
             questionsDesc: "Text me on WhatsApp if you need route recommendations or have any questions.",
-            cheers: "See you soon on the road!"
+            cheers: "See you soon on the road!",
+
+            paymentSubject: "✅ Your booking is confirmed! - Complete payment",
+            paymentTitle: "✅ Good news!",
+            paymentSubtitle: "Your booking has been approved",
+            paymentIntro: "Great! We have reviewed your request and <strong>confirm the availability</strong> of Vito Tinto for the dates you requested.",
+            paymentDetailsTitle: "📅 Booking Details:",
+            vatIncluded: "* VAT included",
+            paymentNextStepTitle: "💳 Next step: Complete payment",
+            paymentNextStepDesc: "To secure your booking, complete the payment securely via Stripe by clicking the button below.",
+            payNow: "💳 Pay Now",
+            paymentWarningTitle: "⏰ Important:",
+            paymentWarningDesc: "This payment link is valid for 24 hours. If you do not complete the payment within that time, the booking will be released for other customers.",
+            paymentPostInfo: "Once payment is completed, you will immediately receive a confirmation email with all details to pick up the van.",
+            paymentDoubts: "Have any questions? Feel free to contact us by replying to this email or via WhatsApp.",
+            paymentFooter: "Vito Tinto - Freedom on wheels",
+
+            refundSubject: "Information about your booking 🚐 - Vito Tinto",
+            refundTitle: "Booking Cancelled and Refunded",
+            refundIntro: "We inform you that your booking for the <strong>Vito Tinto</strong> camper van has been cancelled.",
+            refundDetailsTitle: "Refund Details:",
+            refundProcessed: "We have processed a full refund of your payment via Stripe.",
+            periodCancelled: "Cancelled Period:",
+            refundAmount: "Refunded Amount:",
+            refundBankInfo: "* Money usually takes 5-10 business days to appear in your bank account, depending on your financial institution.",
+            refundSorry: "We apologize for any inconvenience this may cause. We hope to see you soon another time."
         }
     }
 }

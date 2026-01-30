@@ -20,6 +20,8 @@ export async function createBookingRequest(data: BookingRequestData) {
     const authSupabase = await createClient()
     const adminSupabase = await createAdminClient()
 
+    console.log('📝 createBookingRequest received:', JSON.stringify(data, null, 2))
+
     // Verificar si el usuario está autenticado para vincular la reserva
     const { data: { user } } = await authSupabase.auth.getUser()
 
@@ -39,10 +41,12 @@ export async function createBookingRequest(data: BookingRequestData) {
                 status: 'pending_approval', // Esperando aprobación de Andrea
                 user_id: user?.id || null, // Vinculamos si está logueado, sino null
                 selected_extras: data.extras || [], // Guardamos los extras en la DB
-                // preferred_language: data.preferredLanguage || 'es' // TODO: Descomentar cuando se ejecute la migración en DB
+                preferred_language: data.preferredLanguage // Removing fallback to verify what is actually sent
             })
             .select()
             .single()
+
+        console.log('💾 Booking saved in DB:', booking)
 
         if (error) {
             console.error('Error creating booking request:', error)

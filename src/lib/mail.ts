@@ -140,52 +140,54 @@ export async function sendCancellationRefundEmail(data: {
     startDate: string,
     endDate: string,
     refundAmount: string
+    language?: Language
 }) {
-    const { email, customerName, startDate, endDate, refundAmount } = data
+    const { email, customerName, startDate, endDate, refundAmount, language = 'es' } = data
+    const t = translations[language].email
 
     try {
         await getResendClient().emails.send({
             from: 'Vito Tinto <hola@alquilercampermallorca.com>',
             to: email,
-            subject: `Información sobre tu reserva 🚐 - Vito Tinto`,
+            subject: t.refundSubject,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
                     <div style="background-color: #f44336; padding: 40px 20px; text-align: center; color: white;">
-                        <h1 style="margin: 0; font-size: 28px;">Reserva Cancelada y Reembolso</h1>
+                        <h1 style="margin: 0; font-size: 28px;">${t.refundTitle}</h1>
                     </div>
                     
                     <div style="padding: 30px;">
                         <h2>Hola ${customerName},</h2>
-                        <p>Te informamos de que tu reserva para la furgoneta <strong>Vito Tinto</strong> ha sido cancelada.</p>
+                        <p>${t.refundIntro}</p>
                         
                         <div style="background-color: #fff4f4; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ffebee;">
-                            <h3 style="margin-top: 0; color: #d32f2f; font-size: 16px;">Detalles del Reembolso:</h3>
-                            <p>Hemos procesado una devolución total de tu pago a través de Stripe.</p>
+                            <h3 style="margin-top: 0; color: #d32f2f; font-size: 16px;">${t.refundDetailsTitle}</h3>
+                            <p>${t.refundProcessed}</p>
                             <table style="width: 100%; font-size: 14px;">
                                 <tr>
-                                    <td style="padding: 5px 0; color: #666;">Periodo cancelado:</td>
+                                    <td style="padding: 5px 0; color: #666;">${t.periodCancelled}</td>
                                     <td style="padding: 5px 0; font-weight: bold; text-align: right;">${startDate} - ${endDate}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 5px 0; color: #666;">Importe Reembolsado:</td>
+                                    <td style="padding: 5px 0; color: #666;">${t.refundAmount}</td>
                                     <td style="padding: 5px 0; font-weight: bold; text-align: right; color: #d32f2f; font-size: 18px;">${refundAmount}€</td>
                                 </tr>
                             </table>
                             <p style="font-size: 12px; color: #666; margin-top: 15px;">
-                                * El dinero suele tardar entre 5 y 10 días laborables en aparecer en tu cuenta bancaria, dependiendo de tu entidad financiera.
+                                ${t.refundBankInfo}
                             </p>
                         </div>
 
-                        <p>Sentimos los inconvenientes que esto te pueda causar. Esperamos verte pronto en otra ocasión.</p>
+                        <p>${t.refundSorry}</p>
 
                         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
-                            <p style="color: #999; font-size: 12px;">Vito Tinto - Libertad sobre ruedas</p>
+                            <p style="color: #999; font-size: 12px;">Vito Tinto - ${t.cheers}</p>
                         </div>
                     </div>
                 </div>
             `
         })
-        console.log(`✅ Email de cancelación enviado a: ${email}`)
+        console.log(`✅ Email de cancelación enviado a: ${email} (Idioma: ${language})`)
     } catch (error: any) {
         console.error('❌ Error enviando email de cancelación:', error.message || error)
     }
@@ -326,73 +328,77 @@ export async function sendPaymentLinkToCustomer(data: {
     totalPrice: number
     paymentLink: string
     bookingId: string
+    language?: Language
 }) {
-    console.log(`📧 Enviando link de pago a: ${data.customerEmail}`)
+    const { customerName, customerEmail, startDate, endDate, totalPrice, paymentLink, bookingId, language = 'es' } = data
+    const t = translations[language].email
+
+    console.log(`📧 Enviando link de pago a: ${customerEmail} (Idioma: ${language})`)
 
     try {
         await getResendClient().emails.send({
             from: 'Vito Tinto <hola@alquilercampermallorca.com>',
-            to: data.customerEmail,
-            subject: `✅ ¡Tu reserva está confirmada! - Completa el pago`,
+            to: customerEmail,
+            subject: t.paymentSubject,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
                     <div style="background-color: #722f37; padding: 40px 20px; text-align: center; color: white;">
-                        <h1 style="margin: 0; font-size: 28px;">✅ ¡Buenas noticias!</h1>
-                        <p style="opacity: 0.9;">Tu reserva ha sido aprobada</p>
+                        <h1 style="margin: 0; font-size: 28px;">${t.paymentTitle}</h1>
+                        <p style="opacity: 0.9;">${t.paymentSubtitle}</p>
                     </div>
                     
                     <div style="padding: 30px;">
-                        <h2 style="color: #722f37;">Hola ${data.customerName},</h2>
-                        <p>¡Genial! Hemos revisado tu solicitud y <strong>confirmamos la disponibilidad</strong> de Vito Tinto para las fechas que solicitaste.</p>
+                        <h2 style="color: #722f37;">Hola ${customerName},</h2>
+                        <p>${t.paymentIntro}</p>
                         
                         <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">📅 Detalles de tu Reserva:</h3>
+                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">${t.paymentDetailsTitle}</h3>
                             <table style="width: 100%; font-size: 14px;">
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666;">Check-in:</td>
-                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.startDate}</td>
+                                    <td style="padding: 8px 0; color: #666;">${t.checkIn}:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${startDate}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666;">Check-out:</td>
-                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${data.endDate}</td>
+                                    <td style="padding: 8px 0; color: #666;">${t.checkOut}:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">${endDate}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 8px 0; color: #666;">Total a pagar:</td>
-                                    <td style="padding: 8px 0; font-weight: bold; text-align: right; color: #722f37; font-size: 18px;">${data.totalPrice}€</td>
+                                    <td style="padding: 8px 0; color: #666;">${t.totalPrice}:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right; color: #722f37; font-size: 18px;">${totalPrice}€</td>
                                 </tr>
                             </table>
-                            <p style="margin: 10px 0 0 0; font-size: 11px; color: #999;">* IVA incluido</p>
+                            <p style="margin: 10px 0 0 0; font-size: 11px; color: #999;">${t.vatIncluded}</p>
                         </div>
 
                         <div style="background-color: #e7f3ff; padding: 20px; border-radius: 8px; border-left: 4px solid #2196F3; margin: 20px 0;">
-                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">💳 Siguiente paso: Completar el pago</h3>
+                            <h3 style="margin-top: 0; color: #333; font-size: 16px;">${t.paymentNextStepTitle}</h3>
                             <p style="margin: 10px 0; font-size: 14px;">
-                                Para asegurar tu reserva, completa el pago de forma segura a través de Stripe haciendo clic en el botón de abajo.
+                                ${t.paymentNextStepDesc}
                             </p>
                         </div>
 
                         <div style="text-align: center; margin: 40px 0;">
-                            <a href="${data.paymentLink}" 
+                            <a href="${paymentLink}" 
                                style="display: inline-block; background-color: #722f37; color: white; padding: 18px 50px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                                💳 Pagar Ahora (${data.totalPrice}€)
+                                ${t.payNow} (${totalPrice}€)
                             </a>
                         </div>
 
                         <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin: 20px 0;">
                             <p style="margin: 0; font-size: 13px; color: #856404;">
-                                <strong>⏰ Importante:</strong> Este link de pago es válido durante 24 horas. Si no completas el pago en ese tiempo, la reserva quedará liberada para otros clientes.
+                                <strong>${t.paymentWarningTitle}</strong> ${t.paymentWarningDesc}
                             </p>
                         </div>
 
-                        <p style="margin-top: 30px;">Una vez completado el pago, recibirás inmediatamente un email de confirmación con todos los detalles para recoger la furgoneta.</p>
+                        <p style="margin-top: 30px;">${t.paymentPostInfo}</p>
 
-                        <p>¿Tienes alguna duda? No dudes en contactarnos respondiendo a este email o por WhatsApp.</p>
+                        <p>${t.paymentDoubts}</p>
 
-                        <p style="margin-top: 30px;">¡Nos vemos pronto en la carretera! 🚐💨</p>
+                        <p style="margin-top: 30px;">${t.cheers} 🚐💨</p>
 
                         <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
-                            <p style="color: #999; font-size: 12px;">ID de Reserva: ${data.bookingId.slice(0, 8)}</p>
-                            <p style="color: #999; font-size: 12px;">Vito Tinto - Libertad sobre ruedas</p>
+                            <p style="color: #999; font-size: 12px;">ID: ${bookingId.slice(0, 8)}</p>
+                            <p style="color: #999; font-size: 12px;">${t.paymentFooter}</p>
                         </div>
                     </div>
                 </div>

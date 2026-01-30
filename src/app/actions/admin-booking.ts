@@ -30,6 +30,8 @@ export async function approveBookingRequest(bookingId: string) {
             throw new Error('Reserva no encontrada')
         }
 
+        console.log('🔎 Admin fetched booking:', booking)
+
         if (booking.status !== 'pending_approval') {
             throw new Error('Esta reserva ya ha sido procesada')
         }
@@ -88,7 +90,8 @@ export async function approveBookingRequest(bookingId: string) {
                 endDate: booking.end_date,
                 totalPrice: booking.total_price,
                 paymentLink: paymentLink.url,
-                bookingId: bookingId
+                bookingId: bookingId,
+                language: (booking as any).preferred_language || 'es'
             })
         } catch (emailError) {
             console.error('Error sending payment link email:', emailError)
