@@ -10,13 +10,19 @@ export async function login(formData: FormData) {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    })
+    let error: any
+    try {
+        const result = await supabase.auth.signInWithPassword({ email, password })
+        error = result.error
+    } catch (e: any) {
+        redirect(`/error?message=${encodeURIComponent('No se pudo conectar con el servidor. Por favor, inténtalo de nuevo.')}`)
+    }
 
     if (error) {
-        redirect(`/error?message=${encodeURIComponent(error.message)}`)
+        const msg = error.message === 'fetch failed'
+            ? 'No se pudo conectar con el servidor. Por favor, inténtalo de nuevo.'
+            : error.message
+        redirect(`/error?message=${encodeURIComponent(msg)}`)
     }
 
     // Lógica de redirección inteligente
